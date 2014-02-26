@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+  <id>gimmie:GimmieRewards</id>
+  <version>1.0</version>
+
+  <file name="$languagedir/Modifications.english.php">
+    <operation>
+      <search position="end" />
+      <add>
+        <![CDATA[
+        $txt['gmss_title'] = 'Gimmie Rewards';
+        $txt['gmss_gimmie_rewards'] = 'Gimmie Rewards';
+        ]]>
+      </add>
+    </operation>
+  </file>
+
+  <file name="$boarddir/index.php">
+    <operation>
+   		<search position="before" whitespace="loose"><![CDATA['admin' => array('Admin.php', 'AdminMain'),]]></search>
+      <add><![CDATA[
+        'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'),
+        ]]></add>
+    </operation>
+  </file>
+
+  <file name="$sourcedir/Admin.php">
+    <operation>
+      <search position="after" whitespace="loose"><![CDATA[
+'layout' => array(
+                        'title' => $txt['layout_controls'],]]>
+      </search>
+      <add>
+        <![CDATA[
+        'gmss' => array(
+          'title' => $txt['gmss_title'],
+          'permission' => array('admin_forum'),
+          'areas' => array(
+            'gmss' => array(
+              'label' => $txt['gmss_gimmie_rewards'],
+              'file' => 'Subs-GimmieRewards.php',
+              'function' => 'gimmie_reward_config',
+              'custom_url' => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc,
+              'icon' => 'gimmie.jpg'
+            )
+          )
+        ),
+        ]]>
+      </add>
+    </operation>
+  </file>
+</modification>
+
