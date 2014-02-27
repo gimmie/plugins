@@ -15,12 +15,179 @@
       </add>
     </operation>
   </file>
+  
+  <file name="$themedir/index.template.php">
+  	<operation>
+  	  <search position="after" whitespace="loose">
+    	  <![CDATA[// Here comes the JavaScript bits!]]>
+  	  </search>
+  	  <add>
+  	    <![CDATA[
+  	    Gimmie_rewards_script();
+  	    ]]>
+  	  </add>
+  	</operation>
+  	<operation>
+  	  <search position="end" />
+  	  <add>
+    	  <![CDATA[
+// Gimmie Rewards
+function Gimmie_rewards_script() {
+	global $context, $settings, $options, $scripturl, $txt, $modSettings;
+	
+	if (!$modSettings['gm_enable']) {
+  	return;
+	}
+	
+	$key = $modSettings['gm_key'];
+	
+  echo <<<EOS
+  <script type="text/javascript">
+    _gimmie = {
+      "endpoint"                    : "$scripturl?action=gmpx;sa=",
+      "key"                         : "$key",
+      "country"                     : "global",
+      "locale"                      : "us",
+      "debug"                       : true,
+      "options"                     : {
+        "animate"                   : true,
+        "auto_show_notification"    : true,
+        "push_notification"         : true,
+        "notification_timeout"      : 60,
+        "responsive"                : true,
+        "show_anonymous_rewards"    : true,
+        "shuffle_reward"            : true,
+        "sponsor_url"               : "http://google.com",
+        "default_level_icon"        : "",
+        "pages"                     : {
+          "catalog"                 : {
+            "hide"                  : false,
+            "hide_sponsor_here"     : true
+          },
+          "profile"                 : {
+            "hide"                  : false,
+            "redemptions"           : true,
+            "mayorships"            : true,
+            "badges"                : true,
+            "activities"            : true,
+            "show_badge_recipe"     : true,
+            "show_badge_progress"   : true 
+          },
+          "leaderboard"             : {
+            "table"                 : "alltime", //alltime,thisweek,last7days,pastweek,today,last30days,pastmonth,thismonth
+            "hide"                  : false,
+            "mostpoints"            : true,
+            "mostrewards"           : true,
+            "mostvalues"            : true
+          }
+        }
+      },
+      "events"                      : {
+        "widgetLoad"                : function () {
+          console.log ('Loaded');
+        },
+        "login"                     : function () {
+          console.log ('Login');
+        },
+        "loadLeaderboard"           : function (data, cb) {
+          //data
+          cb(data);
+        }
+      },
+      "text"                        : {
+        "empty_reward"              : "There are no rewards in the catalog right now. Please check back again while we add more rewards.",
+        "loading_reward"            : "Loading Rewards",
+        "error"                     : "Something wrong, please close and open again later.",
+        "login_title_text"          : "Login/Sign up",
+        "login_subline"             : "to redeem rewards",
+        "login_headline"            : "<p>Please login or signup to</p><p>earn points and redeem rewards</p>",
+        "login_button"              : "Login/Signup <img data-src='{{root}}navigation-arrow.png'>",
+        "help_link"                 : "How do I earn points?",
+        "reward_tab_title"          : "Reward",
+        "reward_tab_profile"        : "Profile",
+        "reward_tab_leaderboard"    : "Leaderboard",
+        "points"                    : "points",
+        "loading"                   : "Loading",
+        "reached_highest_level"     : "Reached highest level",
+        "points_to_level"           : "points to Level",
+        "badges_title"              : "Badges",
+        "mayorships_title"          : "Mayorships",
+        "redemptions_title"         : "Redemptions",
+        "activities_title"          : "Activities",
+        "badge"                     : "Badge",
+        "mystery_badge"             : "Mystery Badge",
+        "expires"                   : "Expires",
+        "redeemed"                  : "Redeemed",
+        "expired"                   : "Expired",
+        "loading_activities"        : "Loading Activities",
+        "empty_activities"          : "<p>You don't have recent activities.</p><p>When you earn points, badges or rewards a log of activities is shown here.</p>",
+        "fully_redeemed"            : "FULLY REDEEMED",
+        "featured_reward"           : "FEATURED REWARD",
+        "sponsor_here"              : "<p>Want to list your reward here?</p><small>Click for details.</small>",
+        "back_to_catalog"           : "&laquo; All {{data.category_name}} Rewards",
+        "redeem_button"             : "Redeem with {{data.points}} pts",
+        "use_reward_now"            : "Use Reward Now",
+        "description"               : "Description",
+        "fineprint"                 : "Fine Print",
+        "user_points"               : "You have <span class=\"gimmie-user-points\">{{user.points}}</span> pts",
+        "see_all_redemptions"       : "See All Redemptions",
+        "havent_redeemed"           : "<p>You haven't redeemed any rewards.</p><p>View your redemptions here after redeeming a reward from the catalog.</p>",
+        "see_all_mayorships"        : "See All Mayorships",
+        "empty_mayorships"          : "<p>You don't have any mayorships</p><p>Mayorships are given to the most active user at specific venues in a period of 30 days</p>",
+        "see_all_badges"            : "See All Badges",
+        "loading_badges"            : "Loading Badges",
+        "empty_badges"              : "<p>You don't have any badges.</p><p>Badges are rewarded when you do centain actions.</p>",
+        "see_all_activities"        : "See All Activities",
+        "loading_recent_activities" : "Loading recent activities",
+        "all_time_points"           : "all-time points:",
+        "most_points"               : "Most Points",
+        "most_rewards"              : "Most Rewards",
+        "most_reward_value"         : "Most Reward Value",
+        "loading_leaderboard"       : "Loading Leaderboard",
+        "help"                      : "",
+        "help_url"                  : ""
+      }
+    };
+    
+    (function(d){
+      var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement("script"); js.id = id; js.async = true;
+      js.src = "http://api.gimmieworld.com/assets/gimmie-widget2.all.js";
+      ref.parentNode.insertBefore(js, ref);
+    }(document));
+  </script>
+EOS;
+
+  if (!$context['user']['is_guest']) {
+    $email = $context['user']['email'];
+  
+    echo <<< EOU
+    <script type="text/javascript">
+    _gimmie.user = {
+      "external_uid"              : "$email",
+      // Display name
+      "name"                      : "jenny",
+      // Gateway name
+      "realname"                  : "Real Username",
+      "email"                     : "$email",
+      "avatar"                    : ""
+    }
+    </script>
+EOU;
+  }
+}
+    	  ]]>
+  	  </add>
+  	</operation>
+  </file>
 
   <file name="$boarddir/index.php">
     <operation>
    		<search position="before" whitespace="loose"><![CDATA['admin' => array('Admin.php', 'AdminMain'),]]></search>
       <add><![CDATA[
-        'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'),
+        'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'), // Configuration Action
+        'gmpx' => array('Subs-GimmieRewards.php', 'gimmie_proxy'), // Proxy
         ]]></add>
     </operation>
   </file>
@@ -45,6 +212,23 @@
               'icon' => 'gimmie.jpg'
             )
           )
+        ),
+        ]]>
+      </add>
+    </operation>
+  </file>
+
+  <file name="$sourcedir/Subs.php">
+    <operation>
+      <search position="after" whitespace="loose"><![CDATA['help' => array(]]></search>
+      <add>
+        <![CDATA[
+        'gimmie' => array(
+          'title' => $txt['gimmie_reward_button'],
+          'href' => 'javascript:void(0)',
+          'gm-view' => 'catalog',
+          'show' => true,
+          'sub_buttons' => array(),
         ),
         ]]>
       </add>

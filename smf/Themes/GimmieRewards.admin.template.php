@@ -22,7 +22,7 @@ function template_gimmie_rewards_config() {
               <span><label for="gimmieEnable">Enable Gimmie</label></span>
             </dt>
             <dd>
-              <input type="checkbox" name="gm_settings[gm_enable]" id="gimmieEnable" value="1" class="input_check" <?php echo (isset ($modSettings['gm_enable']) ? 'checked' : ''); ?>>
+              <input type="checkbox" name="gm_settings[gm_enable]" id="gimmieEnable" value="1" class="input_check" <?php echo (isset ($modSettings['gm_enable']) && $modSettings['gm_enable'] == 1 ? 'checked' : ''); ?>>
             </dd>
           </dl>
           <hr class="hrcolor clear">
