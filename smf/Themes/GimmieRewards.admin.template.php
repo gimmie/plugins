@@ -14,7 +14,7 @@ function template_gimmie_rewards_config() {
   
     <form method="post" action="<?php echo $scripturl; ?>?action=gmss">
       <div class="cat_bar">
-        <h3 class="catbg">Gimmie</h3>
+        <h3 class="catbg"><?php echo $txt['gimmie_admin_title']; ?></h3>
       </div>
 
       <div class="windowbg2">
@@ -22,7 +22,7 @@ function template_gimmie_rewards_config() {
         <div class="content gimmie">
           <dl class="settings">
             <dt>
-              <span><label for="gimmieEnable">Enable Gimmie</label></span>
+              <span><label for="gimmieEnable"><?php echo $txt['gimmie_admin_enable_label']; ?></label></span>
             </dt>
             <dd>
               <input type="checkbox" name="gm_settings[gm_enable]" id="gimmieEnable" value="1" class="input_check" <?php echo (isset ($modSettings['gm_enable']) && $modSettings['gm_enable'] == 1 ? 'checked' : ''); ?>>
@@ -32,20 +32,20 @@ function template_gimmie_rewards_config() {
 
           <dl class="settings">
             <dt>
-              <span><label for="gimmieKey">Key</label></span>
+              <span><label for="gimmieKey"><?php echo $txt['gimmie_admin_key_label']; ?></label></span>
             </dt>
             <dd>
               <input type="text" name="gm_settings[gm_key]" id="gimmieKey" size="50" class="input_text gm-input" value="<?php echo (isset ($modSettings['gm_key']) ? htmlspecialchars($modSettings['gm_key']) : ''); ?>">
             </dd>
             <dt>
-              <span><label for="gimmieSecret">Secret</label></span>
+              <span><label for="gimmieSecret"><?php echo $txt['gimmie_admin_secret_label']; ?></label></span>
             </dt>
             <dd>
               <input type="text" name="gm_settings[gm_secret]" id="gimmieSecret" size="50" class="input_text gm-input" value="<?php echo (isset($modSettings['gm_secret']) ? htmlspecialchars($modSettings['gm_secret']) : ''); ?>">
             </dd>
             
             <dt>
-              <span><label for="gimmieCountry">Rewards Country</label></span>
+              <span><label for="gimmieCountry"><?php echo $txt['gimmie_admin_country_label']; ?></label></span>
             </dt>
             <dd>
               <select id="gimmieCountry" name="gm_settings[gm_country]" class="gimmie-config-select gm-select">
@@ -67,17 +67,17 @@ function template_gimmie_rewards_config() {
           
           <dl class="settings">
             <dd>
-              <dt><span><label for="gimmiePopup">Popup Views</label></span></dt>
+              <dt><span><label for="gimmiePopup"><?php echo $txt['gimmie_admin_popup_views']; ?></label></span></dt>
             </dd>
             <dd>
               <input id="gimmieViewCatalog" type="checkbox" name="gm_settings[gm_views][catalog]" value="1" checked disabled="" />
-              <label for="gimmieViewCatalog">Catalog</label>
+              <label for="gimmieViewCatalog"><?php echo $txt['gimmie_admin_popup_catalog']; ?></label>
               
               <input id="gimmieViewProfile" type="checkbox" name="gm_settings[gm_views][profile]" value="1" />
-              <label for="gimmieViewProfile">Profile</label>
+              <label for="gimmieViewProfile"><?php echo $txt['gimmie_admin_popup_profile']; ?></label>
               
               <input id="gimmieViewLeaderboard" type="checkbox" name="gm_settings[gm_views][leaderboard]" value="1" />
-              <label for="gimmieViewLeaderboard">Leaderboard</label>
+              <label for="gimmieViewLeaderboard"><?php echo $txt['gimmie_admin_popup_leaderboard']; ?></label>
             </dd>
           </dl>
           
@@ -90,7 +90,7 @@ function template_gimmie_rewards_config() {
         <span class="botslice"></span>
 
         <input type="hidden" name="sc" value="<?php echo $context['session_id']; ?>" />
-        <input type="hidden" name="sa" value="save" />
+        <input type="hidden" name="sa" value="<?php echo $txt['gimmie_admin_save']; ?>" />
       </div>
 
     </form>
