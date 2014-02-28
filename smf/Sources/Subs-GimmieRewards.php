@@ -58,8 +58,6 @@ function gimmie_actions_hook(&$actions) {
 function gimmie_load_theme_hook() {
   global $context, $settings, $modSettings, $scripturl, $user_info;
   
-  gimmie_log('Load Theme Hook');  
-  
   $themeurl = $settings['theme_url'];
 	$user = $context['user'];
 	
@@ -155,6 +153,22 @@ EOS;
 	}
 	
   $context['html_headers'] = $headers;
+}
+
+/**
+ * Action Hooks
+ */
+function gimmie_login_hook() {
+  global $context, $modSettings;
+  
+  if (isset($modSettings['gm_enable']) && $modSettings['gm_enable'] && $modSettings['gm_trigger_login']) {
+    gimmie_log('Trigger Login Hook');
+  }
+  
+}
+
+function gimmie_create_topic_hook () {
+  global $context;  
 }
 
 /**
