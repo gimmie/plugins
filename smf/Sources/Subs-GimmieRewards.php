@@ -74,9 +74,13 @@ function gimmie_reward_config_save() {
 
   checkSession('post');
   $gm_settings = $_REQUEST['gm_settings'];
+  
+  error_log (print_r($gm_settings, true));
+  
   $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? trim($gm_settings['gm_enable']) : "");
   $gm_settings['gm_key'] = (!empty($gm_settings['gm_key']) ? trim($gm_settings['gm_key']) : "");
   $gm_settings['gm_secret'] = (!empty($gm_settings['gm_secret']) ? trim($gm_settings['gm_secret']) : "");
+  $gm_settings['gm_country'] = (!empty($gm_settings['gm_country']) ? trim($gm_settings['gm_country']) : "");
 
   updateSettings($gm_settings);
   redirectexit('action=admin;area=gmss;sa=settings;gmss_action=saved');

@@ -49,13 +49,15 @@ function template_gimmie_rewards_config() {
             </dt>
             <dd>
               <select id="gimmieCountry" name="gm_settings[gm_country]" class="gimmie-config-select gm-select">
-                <option value="auto">Auto Select</option>
+                <option value="auto" <?php echo ((!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') ? 'selected' : ''); ?>>Auto Select</option>
                 <?php
                 if ($countries) {
                   foreach($countries as &$country) {
-                    ?>
-                    <option value="<?php echo $country->{'cca2'}; ?>"><?php echo $country->{'name'}; ?></option>
-                    <?php
+                ?>
+                    <option value="<?php echo $country->{'cca2'}; ?>" <?php echo ((isset($modSettings['gm_country']) && $modSettings['gm_country'] == $country->{'cca2'}) ? 'selected' : ''); ?>>
+                      <?php echo $country->{'name'}; ?>
+                    </option>
+                <?php
                   }
                 }
                 ?>
@@ -84,13 +86,13 @@ function template_gimmie_rewards_config() {
           <hr class="hrcolor clear">
           
           <div class="righttext">
-            <input type="submit" value="Save" class="button_submit">
+            <input type="submit" value="<?php echo $txt['gimmie_admin_save']; ?>" class="button_submit">
           </div>
         </div>
         <span class="botslice"></span>
 
         <input type="hidden" name="sc" value="<?php echo $context['session_id']; ?>" />
-        <input type="hidden" name="sa" value="<?php echo $txt['gimmie_admin_save']; ?>" />
+        <input type="hidden" name="sa" value="save" />
       </div>
 
     </form>
