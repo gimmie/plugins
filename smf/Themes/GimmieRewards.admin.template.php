@@ -63,23 +63,56 @@ function template_gimmie_rewards_config() {
                 ?>
               </select>
             </dd>
+            
+            <dt><span><label for="gimmiePopup"><?php echo $txt['gimmie_admin_popup_views']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieViewCatalog" type="checkbox" name="gm_settings[gm_views_catalog]" value="1" checked disabled="" />
+              <label for="gimmieViewCatalog"><?php echo $txt['gimmie_admin_popup_catalog']; ?></label>
+              
+              <input id="gimmieViewProfile" type="checkbox" name="gm_settings[gm_views_profile]" value="1" />
+              <label for="gimmieViewProfile"><?php echo $txt['gimmie_admin_popup_profile']; ?></label>
+              
+              <input id="gimmieViewLeaderboard" type="checkbox" name="gm_settings[gm_views_leaderboard]" value="1" />
+              <label for="gimmieViewLeaderboard"><?php echo $txt['gimmie_admin_popup_leaderboard']; ?></label>
+            </dd>
+            
+            <dt><span><label for="gimmieNotificationTimeout"><?php echo $txt['gimmie_admin_notification_timeout']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieNotificationTimeout" type="number" name="gm_settings[gm_notification_timeout]" value="<?php echo (isset ($modSettings['gm_notification_timeout']) ? intval($modSettings['gm_notification_timeout']) : '10'); ?>" />
+            </dd>
           </dl>
-
+          
           <hr class="hrcolor clear">
           
           <dl class="settings">
+            <dt><span><label for="gimmieTriggerLogin"><?php echo $txt['gimmie_admin_trigger_login']; ?></label></span></dt>
             <dd>
-              <dt><span><label for="gimmiePopup"><?php echo $txt['gimmie_admin_popup_views']; ?></label></span></dt>
+              <input id="gimmieTriggerLogin" name="gm_settings[gm_trigger_login]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_login']) && $modSettings['gm_trigger_login'] == 1 ? 'checked' : ''); ?> />
             </dd>
+            
+            <dt><span><label for="gimmieTriggerNewThread"><?php echo $txt['gimmie_admin_trigger_new_thread']; ?></label></span></dt>
             <dd>
-              <input id="gimmieViewCatalog" type="checkbox" name="gm_settings[gm_views][catalog]" value="1" checked disabled="" />
-              <label for="gimmieViewCatalog"><?php echo $txt['gimmie_admin_popup_catalog']; ?></label>
-              
-              <input id="gimmieViewProfile" type="checkbox" name="gm_settings[gm_views][profile]" value="1" />
-              <label for="gimmieViewProfile"><?php echo $txt['gimmie_admin_popup_profile']; ?></label>
-              
-              <input id="gimmieViewLeaderboard" type="checkbox" name="gm_settings[gm_views][leaderboard]" value="1" />
-              <label for="gimmieViewLeaderboard"><?php echo $txt['gimmie_admin_popup_leaderboard']; ?></label>
+              <input id="gimmieTriggerNewThread" name="gm_settings[gm_trigger_new_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_new_thread']) && $modSettings['gm_trigger_new_thread'] == 1 ? 'checked' : ''); ?> />
+            </dd>
+            
+            <dt><span><label for="gimmieTriggerReplyThread"><?php echo $txt['gimmie_admin_trigger_reply']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieTriggerReplyThread" name="gm_settings[gm_trigger_reply_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_reply_thread']) && $modSettings['gm_trigger_reply_thread'] == 1 ? 'checked' : ''); ?> />
+            </dd>
+            
+            <dt><span><label for="gimmieTriggerReplyOwnThread"><?php echo $txt['gimmie_admin_trigger_reply_own_thread']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieTriggerReplyOwnThread" name="gm_settings[gm_trigger_reply_own_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_reply_own_thread']) && $modSettings['gm_trigger_reply_own_thread'] == 1 ? 'checked' : ''); ?> />
+            </dd>
+            
+            <dt><span><label for="gimmieTriggerCreatePoll"><?php echo $txt['gimmie_admin_trigger_create_poll']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieTriggerCreatePoll" name="gm_settings[gm_trigger_create_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_create_poll']) && $modSettings['gm_trigger_create_poll'] == 1 ? 'checked' : ''); ?> />
+            </dd>
+            
+            <dt><span><label for="gimmieTriggerVotePoll"><?php echo $txt['gimmie_admin_trigger_vote_poll']; ?></label></span></dt>
+            <dd>
+              <input id="gimmieTriggerVotePoll" name="gm_settings[gm_trigger_vote_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_vote_poll']) && $modSettings['gm_trigger_vote_poll'] == 1 ? 'checked' : ''); ?> />
             </dd>
           </dl>
           

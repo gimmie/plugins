@@ -43,9 +43,12 @@ function Gimmie_rewards_script() {
 	global $context, $settings, $options, $scripturl, $txt, $modSettings, $user_info;
 	
 	$themeurl = $settings['theme_url'];
-	$key = $modSettings['gm_key'];
-	$endpoint = $scripturl."?action=gmpx;sa=";
 	$user = $context['user'];
+	
+	$endpoint = $scripturl."?action=gmpx;sa=";
+	$key = $modSettings['gm_key'];
+	$notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
+	
 	
 	$country = '';
 	
@@ -106,7 +109,7 @@ echo <<<EOS
         "animate"                   : true,
         "auto_show_notification"    : true,
         "push_notification"         : true,
-        "notification_timeout"      : 60,
+        "notification_timeout"      : $notification_timeout,
         "responsive"                : true,
         "show_anonymous_rewards"    : true,
         "shuffle_reward"            : true
@@ -136,8 +139,8 @@ EOS;
     <operation>
    		<search position="before" whitespace="loose"><![CDATA['admin' => array('Admin.php', 'AdminMain'),]]></search>
       <add><![CDATA[
-        'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'), // Configuration Action
         'gmpx' => array('Subs-GimmieRewards.php', 'gimmie_proxy'), // Proxy
+        'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'), // Configuration Action
         ]]></add>
     </operation>
   </file>

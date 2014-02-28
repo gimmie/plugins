@@ -7,8 +7,6 @@ if (!defined('SMF')) {
  * Proxy Area
  */
 function gimmie_proxy() {
-  is_not_guest();
-
   global $sourcedir, $context, $modSettings;
   require_once($sourcedir.'/Gimmie.sdk.php');
 
@@ -77,10 +75,24 @@ function gimmie_reward_config_save() {
   
   error_log (print_r($gm_settings, true));
   
-  $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? trim($gm_settings['gm_enable']) : "");
+  $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? true : false);
+  
   $gm_settings['gm_key'] = (!empty($gm_settings['gm_key']) ? trim($gm_settings['gm_key']) : "");
   $gm_settings['gm_secret'] = (!empty($gm_settings['gm_secret']) ? trim($gm_settings['gm_secret']) : "");
-  $gm_settings['gm_country'] = (!empty($gm_settings['gm_country']) ? trim($gm_settings['gm_country']) : "");
+  $gm_settings['gm_country'] = (!empty($gm_settings['gm_country']) ? trim($gm_settings['gm_country']) : 'auto');
+  
+  $gm_settings['gm_notification_timeout'] = (!empty($gm_settings['gm_notification_timeout']) ? intval(trim($gm_settings['gm_notification_timeout'])) : 10);
+  
+  $gm_settings['gm_views_catalog'] = (!empty($gm_settings['gm_views_catalog']) ? true : false);
+  $gm_settings['gm_views_profile'] = (!empty($gm_settings['gm_views_profile']) ? true : false);
+  $gm_settings['gm_views_leaderboard'] = (!empty($gm_settings['gm_views_leaderboard']) ? true : false);
+  
+  $gm_settings['gm_trigger_login'] = (!empty($gm_settings['gm_trigger_login']) ? true : false);
+  $gm_settings['gm_trigger_new_thread'] = (!empty($gm_settings['gm_trigger_new_thread']) ? true : false);
+  $gm_settings['gm_trigger_reply_thread'] = (!empty($gm_settings['gm_trigger_reply_thread']) ? true : false);
+  $gm_settings['gm_trigger_reply_own_thread'] = (!empty($gm_settings['gm_trigger_reply_own_thread']) ? true : false);
+  $gm_settings['gm_trigger_create_poll'] = (!empty($gm_settings['gm_trigger_create_poll']) ? true : false);
+  $gm_settings['gm_trigger_vote_poll'] = (!empty($gm_settings['gm_trigger_vote_poll']) ? true : false);
 
   updateSettings($gm_settings);
   redirectexit('action=admin;area=gmss;sa=settings;gmss_action=saved');
