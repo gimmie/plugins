@@ -1,5 +1,8 @@
 <?php
+$txt['gimmie_button'] = 'Rewards';
+
 $txt['gimmie_admin_title'] = 'Gimmie';
+$txt['gimmie_admin_description'] = 'Rewards and Trigger Configuration';
 $txt['gimmie_admin_enable_label'] = 'Enable Gimmie';
 $txt['gimmie_admin_key_label'] = 'API Key';
 $txt['gimmie_admin_secret_label'] = 'API Secret';

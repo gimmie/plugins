@@ -2,7 +2,7 @@
 <!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
   <id>gimmie:GimmieRewards</id>
-  <name>Gimmie Rewards system for your forum</name>
+  <name>Gimmie Rewards</name>
   <type>modification</type>
   <version>1.0</version>
 
@@ -10,18 +10,20 @@
     <readme parsebbc="true">readme.txt</readme>
 
     <modification type="file">modification.xml</modification>
+    <code>install.php</code>
     <redirect url="?action=admin;area=gmss;sa=settings">redirect.txt</redirect>
 
     <require-file name="/Themes/GimmieRewards.admin.template.php" destination="$themedir" />
-    <require-file name="/Themes/languages/GimmieRewards.english.php" destination="$themedir/languages" />
+    <require-file name="/Themes/languages/GimmieRewards.english.php" destination="$languagedir" />
     <require-file name="/Themes/css/GimmieRewards.css" destination="$themedir/css" />
 
     <require-file name="/Sources/Gimmie.sdk.php" destination="$sourcedir"/>
     <require-file name="/Sources/Subs-GimmieRewards.php" destination="$sourcedir"/>
   </install>
 
-  <uninstall>
+  <uninstall>    
     <modification type="file" reverse="true">modification.xml</modification>
+    <code>uninstall.php</code>
 
     <remove-file name="$themedir/GimmieRewards.admin.template.php" />
     <remove-file name="$themedir/languages/GimmieRewards.english.php" />

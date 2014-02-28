@@ -4,6 +4,156 @@ if (!defined('SMF')) {
 }
 
 /**
+ * Gimmie Hook
+ */
+function gimmie_menu_buttons_hook(&$menu_buttons) {
+  global $txt;
+  
+  $menu_buttons = array_merge(
+    array_slice($menu_buttons, 0, 1, true),
+    array(
+      'gimmie' => array(
+        'title' => $txt['gimmie_button'],
+        'href' => 'javascript:GimmieWidget._showPopup(\'catalog\')',
+        'show' => true,
+        'sub_buttons' => array()
+      )
+    ),
+    array_slice($menu_buttons, 1)
+  );
+}
+
+function gimmie_admin_area_hook(&$admin_area) {
+  global $txt;
+  
+  $admin_area = array_merge(
+    $admin_area,
+    array(
+      'gmss' => array(
+        'title' => $txt['gmss_title'],
+        'permission' => array('admin_forum'),
+        'areas' => array(
+          'gmss' => array(
+            'label' => $txt['gmss_gimmie_rewards'],
+            'file' => 'Subs-GimmieRewards.php',
+            'function' => 'gimmie_reward_config',
+            'custom_url' => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc
+          )
+        )
+      )
+    )
+  );
+}
+
+function gimmie_actions_hook(&$actions) {
+  $actions = array_merge(
+    $actions,
+    array(
+      'gmpx' => array('Subs-GimmieRewards.php', 'gimmie_proxy'), # Proxy
+      'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'), # Configuration Action
+    )
+  );
+}
+
+function gimmie_load_theme_hook() {
+  global $context, $settings, $modSettings, $scripturl, $user_info;
+  
+  gimmie_log('Load Theme Hook');  
+  
+  $themeurl = $settings['theme_url'];
+	$user = $context['user'];
+	
+	$endpoint = $scripturl."?action=gmpx;sa=";
+	$key = $modSettings['gm_key'];
+	$notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
+	
+	$country = '';
+	
+	if (!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') {
+	  $ip = isset($user_info['ip2']) ? $user_info['ip2'] : $user_info['ip'];
+    $country = trim(file_get_contents('http://api.wipmania.com/'.$ip));
+	}
+	else {
+	  $country = $modSettings['gm_country'];
+	}
+	
+  $headers = $context['html_headers'];
+	$headers = $headers.<<<EOH
+	
+	
+	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" rel="stylesheet" />
+	<link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
+  
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.js"></script>
+	<script type="text/javascript">
+	  $(document).ready(function () {
+	    $(".gimmie .gm-select").select2();
+	  });
+	</script>
+  
+EOH;
+
+  if ($modSettings['gm_enable']) {
+  	$headers = $headers.<<<EOS
+	<script type="text/javascript">
+	  _gimmie = {
+	    "endpoint"                    : "$endpoint",
+	    "key"                         : "$key",
+	    "country"                     : "$country",  
+EOS;
+    
+    if (!$user['is_guest']) {
+      $email = $user['email'];
+      $username = $user['usrname'];
+      $name = $user['name'];
+      
+      $headers = $headers.<<<EOU
+      
+	    "user"                        : {
+	        "external_uid"              : "$email",
+	        // Display name
+	        "name"                      : "$username",
+	        // Gateway name
+	        "realname"                  : "$name",
+	        "email"                     : "$email",
+	        "avatar"                    : ""
+	    },
+EOU;
+    }
+    
+    $headers = $headers.<<<EOS
+
+	    "options"                     : {
+	      "animate"                   : true,
+	      "auto_show_notification"    : true,
+	      "push_notification"         : true,
+	      "notification_timeout"      : $notification_timeout,
+	      "responsive"                : true,
+	      "show_anonymous_rewards"    : true,
+	      "shuffle_reward"            : true
+	    },
+	    "templates"                   : {}
+	  };
+    
+	  $(document).ready(function () {
+	    (function(d){
+	      var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
+	      if (d.getElementById(id)) {return;}
+	      js = d.createElement("script"); js.id = id; js.async = true;
+	      js.src = "http://api.llun.in/assets/gimmie-widget2.all.js";
+	      ref.parentNode.insertBefore(js, ref);
+	    }(document));
+	  });
+	</script>
+EOS;
+
+	}
+	
+  $context['html_headers'] = $headers;
+}
+
+/**
  * Proxy Area
  */
 function gimmie_proxy() {
@@ -98,5 +248,13 @@ function gimmie_reward_config_save() {
   redirectexit('action=admin;area=gmss;sa=settings;gmss_action=saved');
 
 }
+
+/**
+ * Utilities functions
+ */
+function gimmie_log($mixed) {
+  error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
+}
+
 
 ?>
