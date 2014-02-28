@@ -137,6 +137,10 @@ EOU;
 	  };
     
 	  $(document).ready(function () {
+	    var root = document.createElement('div');
+	    root.id = "gimmie-root";
+	    document.body.appendChild(root);
+	    
 	    (function(d){
 	      var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
 	      if (d.getElementById(id)) {return;}
