@@ -24,7 +24,7 @@
   	  </search>
   	  <add>
   	    <![CDATA[
-//Gimmie_rewards_script();
+Gimmie_rewards_script();
   	    ]]>
   	  </add>
   	</operation>
@@ -43,6 +43,9 @@ function Gimmie_rewards_script() {
 	global $context, $settings, $options, $scripturl, $txt, $modSettings;
 	
 	$themeurl = $settings['theme_url'];
+	$key = $modSettings['gm_key'];
+	$endpoint = $scripturl."?action=gmpx;sa=";
+	
   echo <<<EOH
   <link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" rel="stylesheet" />
   <link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
@@ -55,12 +58,10 @@ EOH;
   	return;
 	}
 	
-	$key = $modSettings['gm_key'];
-	
   echo <<<EOS
   <script type="text/javascript">
     _gimmie = {
-      "endpoint"                    : "$scripturl?action=gmpx;sa=",
+      "endpoint"                    : "$endpoint",
       "key"                         : "$key",
       "country"                     : "global",
       "options"                     : {
