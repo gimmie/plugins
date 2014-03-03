@@ -9,6 +9,7 @@
       <search position="end" />
       <add>
         <![CDATA[
+        $txt['gmss_button'] = 'Rewards';
         $txt['gmss_title'] = 'Gimmie Rewards';
         $txt['gmss_gimmie_rewards'] = 'Widget and Trigger Settings';
         ]]>

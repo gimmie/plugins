@@ -13,7 +13,7 @@ function gimmie_menu_buttons_hook(&$menu_buttons) {
     array_slice($menu_buttons, 0, 1, true),
     array(
       'gimmie' => array(
-        'title' => $txt['gimmie_button'],
+        'title' => $txt['gmss_button'],
         'href' => 'javascript:GimmieWidget._showPopup(\'catalog\')',
         'show' => true,
         'sub_buttons' => array()
@@ -103,7 +103,7 @@ EOS;
     
     if (!$user['is_guest']) {
       $email = $user['email'];
-      $username = $user['usrname'];
+      $username = $user['username'];
       $name = $user['name'];
       
       $headers = $headers.<<<EOU
