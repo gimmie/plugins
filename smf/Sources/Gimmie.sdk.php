@@ -890,4 +890,59 @@ class OAuthUtil {
   }
 }
 
+class Gimmie {
+  
+  private static $instance;
+  private $gimmie_root = 'https://api.gimmieworld.com';
+  
+  public static function getInstance($key, $secret) {
+    if (!$instance) {
+      $instance = new Gimmie($key, $secret);
+    }
+    return $instance;
+  }
+  
+  function __construct($key, $secret) {
+    $this->key = $key;
+    $this->secret = $secret;
+  }
+  
+  public function login($user_id) {
+    $this->user_id = $user_id;
+  }
+  
+  public function trigger_with_name($name) {
+    $parameters = array(
+      'event_name' => $name
+    );
+    return $this->invoke('trigger', $parameters);
+  }
+  
+  private function invoke($action, $parameters) {
+    // Don't run anything if user doesn't login
+    if (!isset($this->user_id)) return;
+  
+    $gimmie_root = $this->gimmie_root;
+    $endpoint = "$gimmie_root/1/$action.json?".implode('&', $parameters);
+    
+    $key = $this->key;
+    $secret = $this->secret;
+    
+    $access_token = $this->user_id;
+    $access_token_secret = $secret;
+    
+    $sig_method = new OAuthSignatureMethod_HMAC_SHA1();
+    $consumer = new OAuthConsumer($key, $secret, NULL);
+    $token = new OAuthConsumer($access_token, $access_token_secret);
+    
+    $acc_req = OAuthRequest::from_consumer_and_token($consumer, $token, 'GET', $endpoint, $parameters);
+    $acc_req->sign_request($sig_method, $consumer, $token);
+    
+    $json = file_get_contents($acc_req);
+    
+    return $json;
+  }
+  
+}
+
 ?>

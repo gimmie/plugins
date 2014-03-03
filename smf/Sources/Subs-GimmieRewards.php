@@ -125,7 +125,6 @@ EOU;
 	    "options"                     : {
 	      "animate"                   : true,
 	      "auto_show_notification"    : true,
-	      "push_notification"         : true,
 	      "notification_timeout"      : $notification_timeout,
 	      "responsive"                : true,
 	      "show_anonymous_rewards"    : true,
@@ -158,18 +157,48 @@ EOS;
 /**
  * Action Hooks
  */
-function gimmie_login_hook() {
-  global $context, $modSettings;
+function gimmie_login_hook($username) {
+  global $sourcedir, $context, $modSettings, $user_profile;
+  require_once($sourcedir.'/Gimmie.sdk.php');
   
-  if (isset($modSettings['gm_enable']) && $modSettings['gm_enable'] && $modSettings['gm_trigger_login']) {
-    gimmie_log('Trigger Login Hook');
+  if (_check_event_enable('gm_trigger_login')) {
+    $members = loadMemberData(array($username), true);
+    $user = $user_profile[array_pop($members)];
+    
+    $email = $user['email_address'];
+    _trigger_event_for_user('did_smf_user_login_time', $email);
+  }
+  
+  // SMF Requires this hook returns something.
+  return "";
+}
+
+function gimmie_create_topic_hook ($msgOptions, $topicOptions, $posterOptions) {
+  global $sourcedir, $context, $user_info;
+  require_once($sourcedir.'/Gimmie.sdk.php');
+  
+  $email = $user_info['email'];
+  if ($topicOptions['poll'] && _check_event_enable('gm_trigger_create_poll')) {
+    _trigger_event_for_user('did_smf_new_poll', $email);
+  }
+  else if (_check_event_enable('gm_trigger_new_thread')) {
+    _trigger_event_for_user('did_smf_new_thread', $email);
   }
   
 }
 
-function gimmie_create_topic_hook () {
-  global $context;  
+function _check_event_enable($name) {
+  global $modSettings;
+  return (isset($modSettings['gm_enable']) && $modSettings['gm_enable'] && $modSettings[$name]);
 }
+
+function _trigger_event_for_user($event, $user) {
+  global $modSettings;
+  $gimmie = Gimmie::getInstance($modSettings['gm_key'], $modSettings['gm_secret']);
+  $gimmie->login($user);
+  $gimmie->trigger_with_name($event);
+}
+
 
 /**
  * Proxy Area
@@ -241,7 +270,7 @@ function gimmie_reward_config_save() {
   checkSession('post');
   $gm_settings = $_REQUEST['gm_settings'];
   
-  error_log (print_r($gm_settings, true));
+  gimmie_log($gm_settings);
   
   $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? true : false);
   
