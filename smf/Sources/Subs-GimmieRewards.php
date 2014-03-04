@@ -163,14 +163,14 @@ function gimmie_redirect(&$setLocation, &$refresh) {
 
   switch ($context['current_action']) {
     case 'vote':
-      if (_check_event_enable('gm_trigger_vote_poll')) {
-        _trigger_event_for_user('did_smf_vote_poll', $email);
+      if (is_event_enabled('gm_trigger_vote_poll')) {
+        trigger_event_for_user('did_smf_vote_poll', $email);
       }
       break;
     case 'post2':
       $request = $smcFunc['db_query']('', '
   			SELECT
-  				t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
+  				t.id_board, t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
   				CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
   			FROM {db_prefix}topics AS t
   				LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
@@ -182,26 +182,30 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   				'current_topic' => $topic,
   			)
   		);
-  		list ($owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
+  		list ($board, $owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
   		$smcFunc['db_free_result']($request);
   
       $user_id = $user_info['id'];
       if ($total_replies > 0) {
-    		if ($user_id == $owner && _check_event_enable('gm_trigger_reply_own_thread')) {
-      		_trigger_event_for_user('did_smf_reply_own_thread', $email);
+    		if ($user_id == $owner && is_event_enabled('gm_trigger_reply_own_thread')) {
+      		trigger_event_for_user('did_smf_reply_own_thread', $email);
     		}
-    		else if (_check_event_enable('gm_trigger_reply_thread')) {
-    		  _trigger_event_for_user('did_smf_reply_thread', $email);
+    		else if (is_event_enabled('gm_trigger_reply_thread')) {
+    		  trigger_event_for_user('did_smf_reply_thread', $email);
     		}
   		}
-  		else if ($poll_id && _check_event_enable('gm_trigger_create_poll')) {
-    		_trigger_event_for_user('did_smf_new_poll', $email);
+  		else if ($poll_id && is_event_enabled('gm_trigger_create_poll')) {
+    		trigger_event_for_user('did_smf_new_poll', $email);
   		}
   		else {
-    		// This is new post
-    		if (_check_event_enable('gm_trigger_new_thread')) {
-      		_trigger_event_for_user('did_smf_new_thread', $email);
+    		if (is_event_enabled('gm_trigger_new_thread')) {
+      		trigger_event_for_user('did_smf_new_thread', $email);
     		}
+  		}
+  		
+  		if (is_board_enabled($board)) {
+    		$keywords = $modSettings['gm_keywords'];
+    		gimmie_log($keywords);
   		}
 
       break;
@@ -214,32 +218,17 @@ function gimmie_login_hook($username) {
   global $sourcedir, $context, $modSettings, $user_profile;
   require_once($sourcedir.'/Gimmie.sdk.php');
   
-  if (_check_event_enable('gm_trigger_login')) {
+  if (is_event_enabled('gm_trigger_login')) {
     $members = loadMemberData(array($username), true);
     $user = $user_profile[array_pop($members)];
     
     $email = $user['email_address'];
-    _trigger_event_for_user('did_smf_user_login_time', $email);
+    trigger_event_for_user('did_smf_user_login_time', $email);
   }
   
   // SMF Requires this hook returns something.
   return "";
 }
-
-function _check_event_enable($name) {
-  global $modSettings;
-  return (isset($modSettings['gm_enable']) && $modSettings['gm_enable'] && $modSettings[$name]);
-}
-
-function _trigger_event_for_user($event, $user) {
-  global $modSettings, $sourcedir;
-  require_once($sourcedir.'/Gimmie.sdk.php');
-  
-  $gimmie = Gimmie::getInstance($modSettings['gm_key'], $modSettings['gm_secret']);
-  $gimmie->login($user);
-  $gimmie->trigger_with_name($event);
-}
-
 
 /**
  * Proxy Area
@@ -311,7 +300,7 @@ function gimmie_reward_config_show() {
 }
 
 function gimmie_reward_config_save() {
-  global $boards, $context;
+  global $context;
 
   isAllowedTo('admin_forum');
   checkSession('post');
@@ -355,4 +344,25 @@ function gimmie_reward_config_save() {
  */
 function gimmie_log($mixed) {
   error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
+}
+
+function is_event_enabled($name) {
+  global $modSettings;
+  return !!(isset($modSettings['gm_enable']) && $modSettings['gm_enable'] && $modSettings[$name]);
+}
+
+function is_board_enabled($board) {
+  global $modSettings;
+  return !!(!isset($modSettings['gm_keywords_board']) || 
+            (isset($modSettings['gm_keywords_board']) && 
+            ($modSettings['gm_keywords_board'] == $board || $modSettings['gm_keywords_board'] == 'all')));
+}
+
+function trigger_event_for_user($event, $user) {
+  global $modSettings, $sourcedir;
+  require_once($sourcedir.'/Gimmie.sdk.php');
+
+  $gimmie = Gimmie::getInstance($modSettings['gm_key'], $modSettings['gm_secret']);
+  $gimmie->login($user);
+  $gimmie->trigger_with_name($event);
 }

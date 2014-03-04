@@ -86,7 +86,7 @@ function template_gimmie_rewards_config() {
             <dt><span><label for="gimmieForum"><?php echo $txt['gimmie_admin_keywords_forum']; ?></label></span></dt>
             <dd>
               <select id="gimmieCountry" name="gm_settings[gm_keywords_board]" class="gimmie-config-select gm-select">
-                <option value="auto" <?php echo ((!isset($modSettings['gm_keywords_board']) || $modSettings['gm_keywords_board'] == 'all') ? 'selected' : ''); ?>>
+                <option value="all" <?php echo ((!isset($modSettings['gm_keywords_board']) || $modSettings['gm_keywords_board'] == 'all') ? 'selected' : ''); ?>>
                 <?php echo $txt['gimmie_admin_keywords_forum_every_board']; ?>
                 </option>
                 <?php
