@@ -14,7 +14,7 @@ remove_integration_function ('integrate_admin_areas', 'gimmie_admin_area_hook');
 remove_integration_function ('integrate_actions', 'gimmie_actions_hook');
 remove_integration_function ('integrate_load_theme', 'gimmie_load_theme_hook');
 
+remove_integration_function ('integrate_redirect', 'gimmie_redirect');
 remove_integration_function ('integrate_login', 'gimmie_login_hook');
-remove_integration_function ('integrate_create_topic', 'gimmie_create_topic_hook');
 
 ?>

@@ -15,7 +15,7 @@ add_integration_function ('integrate_admin_areas', 'gimmie_admin_area_hook', tru
 add_integration_function ('integrate_actions', 'gimmie_actions_hook', true);
 add_integration_function ('integrate_load_theme', 'gimmie_load_theme_hook', true);
 
+add_integration_function ('integrate_redirect', 'gimmie_redirect', true);
 add_integration_function ('integrate_login', 'gimmie_login_hook', true);
-add_integration_function ('integrate_create_topic', 'gimmie_create_topic_hook', true);
 
 ?>
