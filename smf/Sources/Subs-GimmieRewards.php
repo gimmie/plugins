@@ -159,47 +159,55 @@ EOS;
  */
 function gimmie_redirect(&$setLocation, &$refresh) {
   global $context, $user_info, $smcFunc, $topic;
+  $email = $user_info['email'];
+
+  switch ($context['current_action']) {
+    case 'vote':
+      if (_check_event_enable('gm_trigger_vote_poll')) {
+        _trigger_event_for_user('did_smf_vote_poll', $email);
+      }
+      break;
+    case 'post2':
+      $request = $smcFunc['db_query']('', '
+  			SELECT
+  				t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
+  				CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
+  			FROM {db_prefix}topics AS t
+  				LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
+  				LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
+  			WHERE t.id_topic = {int:current_topic}
+  			LIMIT 1',
+  			array(
+  				'current_member' => $user_info['id'],
+  				'current_topic' => $topic,
+  			)
+  		);
+  		list ($owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
+  		$smcFunc['db_free_result']($request);
   
-  if ($context['current_action'] == 'post2') {
-    $request = $smcFunc['db_query']('', '
-			SELECT
-				t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
-				CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
-			FROM {db_prefix}topics AS t
-				LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
-				LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
-			WHERE t.id_topic = {int:current_topic}
-			LIMIT 1',
-			array(
-				'current_member' => $user_info['id'],
-				'current_topic' => $topic,
-			)
-		);
-		list ($owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
-		$smcFunc['db_free_result']($request);
+      $user_id = $user_info['id'];
+      if ($total_replies > 0) {
+    		if ($user_id == $owner && _check_event_enable('gm_trigger_reply_own_thread')) {
+      		_trigger_event_for_user('did_smf_reply_own_thread', $email);
+    		}
+    		else if (_check_event_enable('gm_trigger_reply_thread')) {
+    		  _trigger_event_for_user('did_smf_reply_thread', $email);
+    		}
+  		}
+  		else if ($poll_id && _check_event_enable('gm_trigger_create_poll')) {
+    		_trigger_event_for_user('did_smf_new_poll', $email);
+  		}
+  		else {
+    		// This is new post
+    		if (_check_event_enable('gm_trigger_new_thread')) {
+      		_trigger_event_for_user('did_smf_new_thread', $email);
+    		}
+  		}
 
-    $user_id = $user_info['id'];
-    $email = $user_info['email'];
-        		
-    if ($total_replies > 0) {
-  		if ($user_id == $owner && _check_event_enable('gm_trigger_reply_own_thread')) {
-    		_trigger_event_for_user('did_smf_reply_own_thread', $email);
-  		}
-  		else if (_check_event_enable('gm_trigger_reply_thread')) {
-  		  _trigger_event_for_user('did_smf_reply_thread', $email);
-  		}
-		}
-		else if ($poll_id && _check_event_enable('gm_trigger_create_poll')) {
-  		_trigger_event_for_user('did_smf_new_poll', $email);
-		}
-		else {
-  		// This is new post
-  		if (_check_event_enable('gm_trigger_new_thread')) {
-    		_trigger_event_for_user('did_smf_new_thread', $email);
-  		}
-		}
+      break;
+  }  
 
-  }
+  
 }
   
 function gimmie_login_hook($username) {
