@@ -12,6 +12,10 @@ $txt['gimmie_admin_popup_catalog'] = 'Catalog';
 $txt['gimmie_admin_popup_profile'] = 'Profile';
 $txt['gimmie_admin_popup_leaderboard'] = 'Leaderboard';
 
+$txt['gimmie_admin_keywords_forum'] = 'Forum that you want to trigger event with below keywords';
+$txt['gimmie_admin_keywords_forum_every_board'] = 'Every Board';
+$txt['gimmie_admin_keywords'] = 'Type all words you want to trigger event when exact words match in post or thread. Use commas to separate words. (leave blank to ignore)';
+
 $txt['gimmie_admin_notification_timeout'] = 'Notification Timeout';
 $txt['gimmie_admin_hide_sponsor'] = 'Hide sponsor here from catalog';
 

@@ -5,9 +5,7 @@ if (!defined('SMF')) {
 
 function template_gimmie_rewards_config() {
 
-  global $txt, $context, $scripturl, $modSettings, $settings, $actionArray;
-  
-  $countries = json_decode(file_get_contents('https://raw.github.com/mledoze/countries/master/dist/countries.json'));
+  global $txt, $context, $scripturl, $modSettings;
 ?>
 
   <div class="admincenter">
@@ -51,8 +49,8 @@ function template_gimmie_rewards_config() {
               <select id="gimmieCountry" name="gm_settings[gm_country]" class="gimmie-config-select gm-select">
                 <option value="auto" <?php echo ((!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') ? 'selected' : ''); ?>>Auto Select</option>
                 <?php
-                if ($countries) {
-                  foreach($countries as &$country) {
+                if ($context['gimmie_countries']) {
+                  foreach($context['gimmie_countries'] as &$country) {
                 ?>
                     <option value="<?php echo $country->{'cca2'}; ?>" <?php echo ((isset($modSettings['gm_country']) && $modSettings['gm_country'] == $country->{'cca2'}) ? 'selected' : ''); ?>>
                       <?php echo $country->{'name'}; ?>
@@ -79,6 +77,35 @@ function template_gimmie_rewards_config() {
             <dt><span><label for="gimmieNotificationTimeout"><?php echo $txt['gimmie_admin_notification_timeout']; ?></label></span></dt>
             <dd>
               <input id="gimmieNotificationTimeout" type="number" name="gm_settings[gm_notification_timeout]" value="<?php echo (isset ($modSettings['gm_notification_timeout']) ? intval($modSettings['gm_notification_timeout']) : '10'); ?>" />
+            </dd>
+          </dl>
+          
+          <hr class="hrcolor clear">
+          
+          <dl class="settings">
+            <dt><span><label for="gimmieForum"><?php echo $txt['gimmie_admin_keywords_forum']; ?></label></span></dt>
+            <dd>
+              <select id="gimmieCountry" name="gm_settings[gm_keywords_board]" class="gimmie-config-select gm-select">
+                <option value="auto" <?php echo ((!isset($modSettings['gm_keywords_board']) || $modSettings['gm_keywords_board'] == 'all') ? 'selected' : ''); ?>>
+                <?php echo $txt['gimmie_admin_keywords_forum_every_board']; ?>
+                </option>
+                <?php
+                if ($context['gimmie_boards']) {
+                  foreach($context['gimmie_boards'] as &$board) {
+                ?>
+                <option value="<?php echo $board['id']; ?>" <?php echo ((isset($modSettings['gm_keywords_board']) && $modSettings['gm_keywords_board'] == $board['id']) ? 'selected' : ''); ?>>
+                  <?php echo $board['name']; ?>
+                </option>
+                <?php
+                  }
+                }
+                ?>
+              </select>
+            </dd>
+          
+            <dt><span><label for="gimmieKeywords"><?php echo $txt['gimmie_admin_keywords']; ?></label></span></dt>
+            <dd>
+              <textarea id="gimmieKeywords" name="gm_settings[gm_keywords]" class="gm-input input_textarea" rows="5"></textarea>
             </dd>
           </dl>
           

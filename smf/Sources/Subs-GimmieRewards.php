@@ -294,29 +294,35 @@ function gimmie_reward_config() {
 }
 
 function gimmie_reward_config_show() {
-  global $txt, $context, $modSettings, $settings;
+  global $txt, $context, $modSettings, $settings, $boards, $sourcedir;
 
   isAllowedTo('admin_forum');
   loadLanguage('GimmieRewards');
   loadtemplate('GimmieRewards.admin', array('GimmieRewards.admin'));
+  
+  require_once($sourcedir.'/Subs-Boards.php');
+  getBoardTree();
+  
+  $context['gimmie_countries'] = json_decode(file_get_contents('https://raw.github.com/mledoze/countries/master/dist/countries.json'));
+  $context['gimmie_boards'] = $boards;
 
   $context['sub_template'] = 'gimmie_rewards_config';
-
   $context['page_title'] = $txt['gmss_title'];
 }
 
 function gimmie_reward_config_save() {
-  isAllowedTo('admin_forum');
+  global $boards, $context;
 
+  isAllowedTo('admin_forum');
   checkSession('post');
-  $gm_settings = $_REQUEST['gm_settings'];
   
+  $gm_settings = $_REQUEST['gm_settings'];
   gimmie_log($gm_settings);
   
   $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? true : false);
   
-  $gm_settings['gm_key'] = (!empty($gm_settings['gm_key']) ? trim($gm_settings['gm_key']) : "");
-  $gm_settings['gm_secret'] = (!empty($gm_settings['gm_secret']) ? trim($gm_settings['gm_secret']) : "");
+  $gm_settings['gm_key'] = (!empty($gm_settings['gm_key']) ? trim($gm_settings['gm_key']) : "e52853bfdcf1d49a0368181245b7");
+  $gm_settings['gm_secret'] = (!empty($gm_settings['gm_secret']) ? trim($gm_settings['gm_secret']) : "3a95b4f7da128421ca7a15d67d3b");
   $gm_settings['gm_country'] = (!empty($gm_settings['gm_country']) ? trim($gm_settings['gm_country']) : 'auto');
   
   $gm_settings['gm_notification_timeout'] = (!empty($gm_settings['gm_notification_timeout']) ? intval(trim($gm_settings['gm_notification_timeout'])) : 10);
@@ -331,6 +337,13 @@ function gimmie_reward_config_save() {
   $gm_settings['gm_trigger_reply_own_thread'] = (!empty($gm_settings['gm_trigger_reply_own_thread']) ? true : false);
   $gm_settings['gm_trigger_create_poll'] = (!empty($gm_settings['gm_trigger_create_poll']) ? true : false);
   $gm_settings['gm_trigger_vote_poll'] = (!empty($gm_settings['gm_trigger_vote_poll']) ? true : false);
+
+  $gm_settings['gm_keywords_forum'] = (!empty($gm_settings['gm_keywords_forum']) ? trim($gm_settings['gm_keywords_forum']) : 'all');
+  $gm_settings['gm_keywords'] = (!empty($gm_settings['gm_keywords']) ? trim($gm_settings['gm_keywords']) : "");
+  
+  // Clear context
+  $context['gimmie_countries'] = '';
+  $context['gimmie_boards'] = '';
 
   updateSettings($gm_settings);
   redirectexit('action=admin;area=gmss;sa=settings;gmss_action=saved');
