@@ -944,5 +944,3 @@ class Gimmie {
   }
   
 }
-
-?>

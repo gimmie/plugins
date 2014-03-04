@@ -27,4 +27,3 @@ $txt['gimmie_admin_trigger_create_poll'] = 'Trigger event when post new poll';
 $txt['gimmie_admin_trigger_vote_poll'] = 'Trigger event when vote poll';
 
 $txt['gimmie_admin_save'] = 'Save';
-?>

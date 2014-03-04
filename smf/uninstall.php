@@ -16,5 +16,3 @@ remove_integration_function ('integrate_load_theme', 'gimmie_load_theme_hook');
 
 remove_integration_function ('integrate_redirect', 'gimmie_redirect');
 remove_integration_function ('integrate_login', 'gimmie_login_hook');
-
-?>

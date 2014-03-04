@@ -17,5 +17,3 @@ add_integration_function ('integrate_load_theme', 'gimmie_load_theme_hook', true
 
 add_integration_function ('integrate_redirect', 'gimmie_redirect', true);
 add_integration_function ('integrate_login', 'gimmie_login_hook', true);
-
-?>

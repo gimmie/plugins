@@ -356,6 +356,3 @@ function gimmie_reward_config_save() {
 function gimmie_log($mixed) {
   error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
 }
-
-
-?>
