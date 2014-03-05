@@ -105,7 +105,7 @@ function template_gimmie_rewards_config() {
           
             <dt><span><label for="gimmieKeywords"><?php echo $txt['gimmie_admin_keywords']; ?></label></span></dt>
             <dd>
-              <textarea id="gimmieKeywords" name="gm_settings[gm_keywords]" class="gm-input input_textarea" rows="5"></textarea>
+              <textarea id="gimmieKeywords" name="gm_settings[gm_keywords]" class="gm-input input_textarea" rows="5"><?php echo $modSettings['gm_keywords']; ?></textarea>
             </dd>
           </dl>
           

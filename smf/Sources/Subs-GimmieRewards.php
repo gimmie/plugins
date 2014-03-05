@@ -158,7 +158,7 @@ EOS;
  * Action Hooks
  */
 function gimmie_redirect(&$setLocation, &$refresh) {
-  global $context, $user_info, $smcFunc, $topic;
+  global $context, $user_info, $smcFunc, $topic, $modSettings;
   $email = $user_info['email'];
 
   switch ($context['current_action']) {
@@ -205,7 +205,20 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   		
   		if (is_board_enabled($board)) {
     		$keywords = $modSettings['gm_keywords'];
-    		gimmie_log($keywords);
+    		$keywords = explode(',', $keywords);
+    		$keywords = array_map('trim', $keywords);
+    		
+    		# (not whitespace)<keyword>(not whitespace) or (not whitespace)<another keyword>(not whitespace) or ...
+    		$pattern1 = '\W'.implode('\W|\W', $keywords).'\W'; 
+    		# (start with)<keyword>(not whitespace) or (start with)<another keyword>(not whitespace) or ...
+    		$pattern2 = '^'.implode('\W|^', $keywords).'\W';
+    		# (not whitespace)<keyword>(ending) or (not whitespace)<another keyword>(ending) or ...
+    		$pattern3 = '\W'.implode('$|\W', $keywords).'$';
+    		$pattern = "/($pattern1|$pattern2|$pattern3)/i";
+    		
+    		if (preg_match($pattern, $last_message)) {
+      		trigger_event_for_user('did_smf_post_contain_keywords', $email);
+    		}
   		}
 
       break;
