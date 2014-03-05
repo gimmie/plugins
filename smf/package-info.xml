@@ -9,7 +9,6 @@
   <install>
     <readme parsebbc="true">readme.txt</readme>
 
-    <modification type="file">modification.xml</modification>
     <code>install.php</code>
     <redirect url="?action=admin;area=gmss;sa=settings">redirect.txt</redirect>
 
@@ -22,7 +21,6 @@
   </install>
 
   <uninstall>    
-    <modification type="file" reverse="true">modification.xml</modification>
     <code>uninstall.php</code>
 
     <remove-file name="$themedir/GimmieRewards.admin.template.php" />

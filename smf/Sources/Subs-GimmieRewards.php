@@ -9,11 +9,12 @@ if (!defined('SMF')) {
 function gimmie_menu_buttons_hook(&$menu_buttons) {
   global $txt;
   
+  loadLanguage('GimmieRewards');
   $menu_buttons = array_merge(
     array_slice($menu_buttons, 0, 1, true),
     array(
       'gimmie' => array(
-        'title' => $txt['gmss_button'],
+        'title' => $txt['gimmie_button'],
         'href' => 'javascript:GimmieWidget._showPopup(\'catalog\')',
         'show' => true,
         'sub_buttons' => array()
@@ -26,15 +27,16 @@ function gimmie_menu_buttons_hook(&$menu_buttons) {
 function gimmie_admin_area_hook(&$admin_area) {
   global $txt;
   
+  loadLanguage('GimmieRewards');
   $admin_area = array_merge(
     $admin_area,
     array(
       'gmss' => array(
-        'title' => $txt['gmss_title'],
+        'title' => $txt['gimmie_admin_title'],
         'permission' => array('admin_forum'),
         'areas' => array(
           'gmss' => array(
-            'label' => $txt['gmss_gimmie_rewards'],
+            'label' => $txt['gimmie_admin_description'],
             'file' => 'Subs-GimmieRewards.php',
             'function' => 'gimmie_reward_config',
             'custom_url' => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc
@@ -317,6 +319,16 @@ function gimmie_reward_config() {
   }
 }
 
+function gimmie_localize_config() {
+  $sa = !empty($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
+  switch ($sa) {
+    case 'save':
+      break;
+    default:
+      break;
+  }
+}
+
 function gimmie_reward_config_show() {
   global $txt, $context, $modSettings, $settings, $boards, $sourcedir;
 
@@ -369,6 +381,17 @@ function gimmie_reward_config_save() {
   updateSettings($gm_settings);
   redirectexit('action=admin;area=gmss;sa=settings;gmss_action=saved');
 
+}
+
+function gimmie_localize_config_show() {
+  global $txt, $context, $modSettings, $settings, $boards, $sourcedir;
+
+  isAllowedTo('admin_forum');
+  loadLanguage('GimmieRewards');
+  loadtemplate('GimmieRewards.admin', array('GimmieRewards.admin'));
+  
+  $context['sub_template'] = 'gimmie_localize_config';
+  $context['page_title'] = $txt['gmss_title'];
 }
 
 /**
