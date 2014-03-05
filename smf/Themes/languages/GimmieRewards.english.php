@@ -19,11 +19,12 @@ $txt['gimmie_admin_keywords'] = 'Keywords that you want to give out points when 
 $txt['gimmie_admin_notification_timeout'] = 'Notification Timeout';
 $txt['gimmie_admin_hide_sponsor'] = 'Hide sponsor here from catalog';
 
-$txt['gimmie_admin_trigger_login'] = 'Give out point when user log in';
-$txt['gimmie_admin_trigger_new_thread'] = 'Give out points when create new thread base on keywords and forum';
-$txt['gimmie_admin_trigger_reply'] = 'Give out points when reply thread base on keywords and forum';
-$txt['gimmie_admin_trigger_reply_own_thread'] = 'Give out points when reply own thread base on keywords and forum';
-$txt['gimmie_admin_trigger_create_poll'] = 'Give out points when user create new poll on specific forum above';
-$txt['gimmie_admin_trigger_vote_poll'] = 'Give out points when user vote on the poll on specific forum above';
+$txt['gimmie_admin_trigger_header'] = 'Give out points when';
+$txt['gimmie_admin_trigger_login'] = 'User is logging in';
+$txt['gimmie_admin_trigger_new_thread'] = 'Create new thread base on above keywords and forum';
+$txt['gimmie_admin_trigger_reply'] = 'Reply thread base on above keywords and forum';
+$txt['gimmie_admin_trigger_reply_own_thread'] = 'Reply own thread base on above keywords and forum';
+$txt['gimmie_admin_trigger_create_poll'] = 'User create new poll on above forum';
+$txt['gimmie_admin_trigger_vote_poll'] = 'User vote on the poll on above forum';
 
 $txt['gimmie_admin_save'] = 'Save';

@@ -161,64 +161,74 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   global $context, $user_info, $smcFunc, $topic, $modSettings;
   $email = $user_info['email'];
 
+  $request = $smcFunc['db_query']('', '
+		SELECT
+			t.id_board, t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
+			CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
+		FROM {db_prefix}topics AS t
+			LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
+			LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
+		WHERE t.id_topic = {int:current_topic}
+		LIMIT 1',
+		array(
+			'current_member' => $user_info['id'],
+			'current_topic' => $topic,
+		)
+	);
+	list ($board, $owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
+	$smcFunc['db_free_result']($request);
+  
   switch ($context['current_action']) {
     case 'vote':
-      if (is_event_enabled('gm_trigger_vote_poll')) {
-        trigger_event_for_user('did_smf_vote_poll', $email);
+      $event = 'did_smf_vote_poll';
+      if (is_board_enabled($board) && is_event_enabled("gm_trigger_$event")) {
+        trigger_event_for_user($event, $email);
       }
       break;
     case 'post2':
-      $request = $smcFunc['db_query']('', '
-  			SELECT
-  				t.id_board, t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
-  				CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
-  			FROM {db_prefix}topics AS t
-  				LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
-  				LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
-  			WHERE t.id_topic = {int:current_topic}
-  			LIMIT 1',
-  			array(
-  				'current_member' => $user_info['id'],
-  				'current_topic' => $topic,
-  			)
-  		);
-  		list ($board, $owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
-  		$smcFunc['db_free_result']($request);
-  
+      $user_action = '';
       $user_id = $user_info['id'];
       if ($total_replies > 0) {
-    		if ($user_id == $owner && is_event_enabled('gm_trigger_reply_own_thread')) {
-      		trigger_event_for_user('did_smf_reply_own_thread', $email);
-    		}
-    		else if (is_event_enabled('gm_trigger_reply_thread')) {
-    		  trigger_event_for_user('did_smf_reply_thread', $email);
+        $user_action = 'did_smf_reply_thread';
+    		if ($user_id == $owner) {
+    		  $user_action = 'did_smf_reply_own_thread';
     		}
   		}
-  		else if ($poll_id && is_event_enabled('gm_trigger_create_poll')) {
-    		trigger_event_for_user('did_smf_new_poll', $email);
+  		else if ($poll_id) {
+  		  $user_action = 'did_smf_new_poll';
   		}
   		else {
-    		if (is_event_enabled('gm_trigger_new_thread')) {
-      		trigger_event_for_user('did_smf_new_thread', $email);
-    		}
+    		$user_action = 'did_smf_new_thread';
   		}
   		
-  		if (is_board_enabled($board)) {
-    		$keywords = $modSettings['gm_keywords'];
-    		$keywords = explode(',', $keywords);
-    		$keywords = array_map('trim', $keywords);
+  		if (is_board_enabled($board) && is_event_enabled("gm_trigger_$user_action")) {
+        switch ($user_action) {
+          case 'did_smf_new_poll':
+            trigger_event_for_user($user_action, $email);
+            break;
+          case 'did_smf_reply_thread':
+          case 'did_smf_reply_own_thread':
+          case 'did_smf_new_thread':
+            $keywords = $modSettings['gm_keywords'];
+        		$keywords = explode(',', $keywords);
+        		$keywords = array_map('trim', $keywords);
+        		
+        		# (not whitespace)<keyword>(not whitespace) or (not whitespace)<another keyword>(not whitespace) or ...
+        		$pattern1 = '\W'.implode('\W|\W', $keywords).'\W'; 
+        		# (start with)<keyword>(not whitespace) or (start with)<another keyword>(not whitespace) or ...
+        		$pattern2 = '^'.implode('\W|^', $keywords).'\W';
+        		# (not whitespace)<keyword>(ending) or (not whitespace)<another keyword>(ending) or ...
+        		$pattern3 = '\W'.implode('$|\W', $keywords).'$';
+        		$pattern = "/($pattern1|$pattern2|$pattern3)/i";
+        		
+        		if (preg_match($pattern, $last_message)) {
+        		  gimmie_log($user_action);
+          		trigger_event_for_user($user_action, $email);
+        		}  
+            
+            break;
+        }
     		
-    		# (not whitespace)<keyword>(not whitespace) or (not whitespace)<another keyword>(not whitespace) or ...
-    		$pattern1 = '\W'.implode('\W|\W', $keywords).'\W'; 
-    		# (start with)<keyword>(not whitespace) or (start with)<another keyword>(not whitespace) or ...
-    		$pattern2 = '^'.implode('\W|^', $keywords).'\W';
-    		# (not whitespace)<keyword>(ending) or (not whitespace)<another keyword>(ending) or ...
-    		$pattern3 = '\W'.implode('$|\W', $keywords).'$';
-    		$pattern = "/($pattern1|$pattern2|$pattern3)/i";
-    		
-    		if (preg_match($pattern, $last_message)) {
-      		trigger_event_for_user('did_smf_post_contain_keywords', $email);
-    		}
   		}
 
       break;
@@ -231,12 +241,13 @@ function gimmie_login_hook($username) {
   global $sourcedir, $context, $modSettings, $user_profile;
   require_once($sourcedir.'/Gimmie.sdk.php');
   
-  if (is_event_enabled('gm_trigger_login')) {
+  $event = 'did_smf_user_login_time';
+  if (is_event_enabled("gm_trigger_$event")) {
     $members = loadMemberData(array($username), true);
     $user = $user_profile[array_pop($members)];
     
     $email = $user['email_address'];
-    trigger_event_for_user('did_smf_user_login_time', $email);
+    trigger_event_for_user($event, $email);
   }
   
   // SMF Requires this hook returns something.
@@ -333,12 +344,12 @@ function gimmie_reward_config_save() {
   $gm_settings['gm_views_profile'] = (!empty($gm_settings['gm_views_profile']) ? true : false);
   $gm_settings['gm_views_leaderboard'] = (!empty($gm_settings['gm_views_leaderboard']) ? true : false);
   
-  $gm_settings['gm_trigger_login'] = (!empty($gm_settings['gm_trigger_login']) ? true : false);
-  $gm_settings['gm_trigger_new_thread'] = (!empty($gm_settings['gm_trigger_new_thread']) ? true : false);
-  $gm_settings['gm_trigger_reply_thread'] = (!empty($gm_settings['gm_trigger_reply_thread']) ? true : false);
-  $gm_settings['gm_trigger_reply_own_thread'] = (!empty($gm_settings['gm_trigger_reply_own_thread']) ? true : false);
-  $gm_settings['gm_trigger_create_poll'] = (!empty($gm_settings['gm_trigger_create_poll']) ? true : false);
-  $gm_settings['gm_trigger_vote_poll'] = (!empty($gm_settings['gm_trigger_vote_poll']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_user_login_time'] = (!empty($gm_settings['gm_trigger_did_smf_user_login_time']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_new_thread'] = (!empty($gm_settings['gm_trigger_did_smf_new_thread']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_reply_thread'] = (!empty($gm_settings['gm_trigger_did_smf_reply_thread']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_reply_own_thread'] = (!empty($gm_settings['gm_trigger_did_smf_reply_own_thread']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_new_poll'] = (!empty($gm_settings['gm_trigger_did_smf_new_poll']) ? true : false);
+  $gm_settings['gm_trigger_did_smf_vote_poll'] = (!empty($gm_settings['gm_trigger_did_smf_vote_poll']) ? true : false);
 
   $gm_settings['gm_keywords_forum'] = (!empty($gm_settings['gm_keywords_forum']) ? trim($gm_settings['gm_keywords_forum']) : 'all');
   $gm_settings['gm_keywords'] = (!empty($gm_settings['gm_keywords']) ? trim($gm_settings['gm_keywords']) : "");

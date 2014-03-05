@@ -111,35 +111,37 @@ function template_gimmie_rewards_config() {
           
           <hr class="hrcolor clear">
           
+          <h1><?php echo $txt['gimmie_admin_trigger_header']; ?></h1>
+          
           <dl class="settings">
             <dt><span><label for="gimmieTriggerLogin"><?php echo $txt['gimmie_admin_trigger_login']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerLogin" name="gm_settings[gm_trigger_login]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_login']) && $modSettings['gm_trigger_login'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerLogin" name="gm_settings[gm_trigger_did_smf_user_login_time]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_user_login_time']) && $modSettings['gm_trigger_did_smf_user_login_time'] == 1 ? 'checked' : ''); ?> />
             </dd>
             
             <dt><span><label for="gimmieTriggerNewThread"><?php echo $txt['gimmie_admin_trigger_new_thread']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerNewThread" name="gm_settings[gm_trigger_new_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_new_thread']) && $modSettings['gm_trigger_new_thread'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerNewThread" name="gm_settings[gm_trigger_did_smf_new_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_new_thread']) && $modSettings['gm_trigger_did_smf_new_thread'] == 1 ? 'checked' : ''); ?> />
             </dd>
             
             <dt><span><label for="gimmieTriggerReplyThread"><?php echo $txt['gimmie_admin_trigger_reply']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerReplyThread" name="gm_settings[gm_trigger_reply_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_reply_thread']) && $modSettings['gm_trigger_reply_thread'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerReplyThread" name="gm_settings[gm_trigger_did_smf_reply_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_reply_thread']) && $modSettings['gm_trigger_did_smf_reply_thread'] == 1 ? 'checked' : ''); ?> />
             </dd>
             
             <dt><span><label for="gimmieTriggerReplyOwnThread"><?php echo $txt['gimmie_admin_trigger_reply_own_thread']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerReplyOwnThread" name="gm_settings[gm_trigger_reply_own_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_reply_own_thread']) && $modSettings['gm_trigger_reply_own_thread'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerReplyOwnThread" name="gm_settings[gm_trigger_did_smf_reply_own_thread]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_reply_own_thread']) && $modSettings['gm_trigger_did_smf_reply_own_thread'] == 1 ? 'checked' : ''); ?> />
             </dd>
             
             <dt><span><label for="gimmieTriggerCreatePoll"><?php echo $txt['gimmie_admin_trigger_create_poll']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerCreatePoll" name="gm_settings[gm_trigger_create_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_create_poll']) && $modSettings['gm_trigger_create_poll'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerCreatePoll" name="gm_settings[gm_trigger_did_smf_new_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_new_poll']) && $modSettings['gm_trigger_did_smf_new_poll'] == 1 ? 'checked' : ''); ?> />
             </dd>
             
             <dt><span><label for="gimmieTriggerVotePoll"><?php echo $txt['gimmie_admin_trigger_vote_poll']; ?></label></span></dt>
             <dd>
-              <input id="gimmieTriggerVotePoll" name="gm_settings[gm_trigger_vote_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_vote_poll']) && $modSettings['gm_trigger_vote_poll'] == 1 ? 'checked' : ''); ?> />
+              <input id="gimmieTriggerVotePoll" name="gm_settings[gm_trigger_did_smf_vote_poll]" type="checkbox" value="1" class="input_check" <?php echo (isset ($modSettings['gm_trigger_did_smf_vote_poll']) && $modSettings['gm_trigger_did_smf_vote_poll'] == 1 ? 'checked' : ''); ?> />
             </dd>
           </dl>
           
