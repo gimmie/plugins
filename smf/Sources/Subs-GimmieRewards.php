@@ -40,10 +40,16 @@ function gimmie_admin_area_hook(&$admin_area) {
         'permission' => array('admin_forum'),
         'areas' => array(
           'gmss' => array(
-            'label' => $txt['gimmie_admin_description'],
-            'file' => 'Subs-GimmieRewards.php',
-            'function' => 'gimmie_reward_config',
-            'custom_url' => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc
+            'label'       => $txt['gimmie_admin_description'],
+            'file'        => 'Subs-GimmieRewards.php',
+            'function'    => 'gimmie_reward_config',
+            'custom_url'  => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc
+          ),
+          'gmls' => array(
+            'label'       => $txt['gimmie_localize_description'],
+            'file'        => 'Subs-GimmieRewards.php',
+            'function'    => 'gimmie_localize_config',
+            'custom_url'  => $scopeurl.'?action=admin;area=gmls;sa=settings;secs='.$sc 
           )
         )
       )
@@ -57,6 +63,7 @@ function gimmie_actions_hook(&$actions) {
     array(
       'gmpx' => array('Subs-GimmieRewards.php', 'gimmie_proxy'), # Proxy
       'gmss' => array('Subs-GimmieRewards.php', 'gimmie_reward_config'), # Configuration Action
+      'gmls' => array('Subs-GimmieRewards.php', 'gimmie_localize_config') # Localization Action
     )
   );
 }
@@ -102,6 +109,10 @@ function gimmie_load_theme_hook() {
 EOH;
 
   if ($modSettings['gm_enable']) {
+    $localize_text = $modSettings['gm_localize'];
+    $help_text = $modSettings['gm_help_text'];
+    $help_url = $modSettings['gm_help_url'];
+  
   	$headers = $headers.<<<EOS
 	<script type="text/javascript">
 	  _gimmie = {
@@ -147,6 +158,11 @@ EOU;
 	        }
 	      }	      
 	    },
+	    "text"                        : {
+	      "help"                      : "$help_text",
+	      "help_url"                  : "$help_url",
+$localize_text
+	    },  
 	    "templates"                   : {}
 	  };
     
@@ -314,12 +330,12 @@ function gimmie_proxy() {
 function gimmie_reward_config() {
   $sa = !empty($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
   switch ($sa) {
-  case 'save':
-    gimmie_reward_config_save();
-    break;
-  default:
-    gimmie_reward_config_show();
-    break;
+    case 'save':
+      gimmie_reward_config_save();
+      break;
+    default:
+      gimmie_reward_config_show();
+      break;
   }
 }
 
@@ -327,8 +343,10 @@ function gimmie_localize_config() {
   $sa = !empty($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
   switch ($sa) {
     case 'save':
+      gimmie_localize_config_save();
       break;
     default:
+      gimmie_localize_config_show();
       break;
   }
 }
@@ -396,6 +414,25 @@ function gimmie_localize_config_show() {
   
   $context['sub_template'] = 'gimmie_localize_config';
   $context['page_title'] = $txt['gmss_title'];
+}
+
+function gimmie_localize_config_save() {
+  global $context;
+
+  isAllowedTo('admin_forum');
+  checkSession('post');
+  
+  $gm_settings = $_REQUEST['gm_settings'];
+  
+  $gm_settings['gm_localize'] = (!empty($gm_settings['gm_localize']) ? trim($gm_settings['gm_localize']) : "");
+  $gm_settings['gm_localize'] = (json_decode('{'.$gm_settings['gm_localize'].'}') ? $gm_settings['gm_localize'] : '');
+  
+  $gm_settings['gm_help_text'] = (!empty($gm_settings['gm_help_text']) ? trim($gm_settings['gm_help_text']) : "");
+  $gm_settings['gm_help_url'] = (!empty($gm_settings['gm_help_url']) ? trim($gm_settings['gm_help_url']) : "");  
+  gimmie_log($gm_settings);
+  
+  updateSettings($gm_settings);
+  redirectexit('action=admin;area=gmls;sa=settings;gmls_action=saved');
 }
 
 /**
