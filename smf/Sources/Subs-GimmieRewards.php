@@ -375,7 +375,9 @@ function gimmie_reward_config_save() {
  * Utilities functions
  */
 function gimmie_log($mixed) {
-  error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
+  if (0) {
+    error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
+  }
 }
 
 function is_event_enabled($name) {
