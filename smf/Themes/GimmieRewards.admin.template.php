@@ -64,13 +64,10 @@ function template_gimmie_rewards_config() {
             
             <dt><span><label for="gimmiePopup"><?php echo $txt['gimmie_admin_popup_views']; ?></label></span></dt>
             <dd>
-              <input id="gimmieViewCatalog" type="checkbox" name="gm_settings[gm_views_catalog]" value="1" checked disabled="" />
-              <label for="gimmieViewCatalog"><?php echo $txt['gimmie_admin_popup_catalog']; ?></label>
-              
-              <input id="gimmieViewProfile" type="checkbox" name="gm_settings[gm_views_profile]" value="1" />
+              <input id="gimmieViewProfile" type="checkbox" name="gm_settings[gm_views_profile]" value="1" <?php echo (!isset($modSettings['gm_views_profile']) || (isset ($modSettings['gm_views_profile']) && $modSettings['gm_views_profile']) == 1 ? 'checked' : ''); ?> />
               <label for="gimmieViewProfile"><?php echo $txt['gimmie_admin_popup_profile']; ?></label>
               
-              <input id="gimmieViewLeaderboard" type="checkbox" name="gm_settings[gm_views_leaderboard]" value="1" />
+              <input id="gimmieViewLeaderboard" type="checkbox" name="gm_settings[gm_views_leaderboard]" value="1" <?php echo (!isset($modSettings['gm_views_leaderboard']) || (isset ($modSettings['gm_views_leaderboard']) && $modSettings['gm_views_leaderboard']) == 1 ? 'checked' : ''); ?> />
               <label for="gimmieViewLeaderboard"><?php echo $txt['gimmie_admin_popup_leaderboard']; ?></label>
             </dd>
             

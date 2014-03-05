@@ -64,6 +64,9 @@ function gimmie_load_theme_hook() {
 	$endpoint = $scripturl."?action=gmpx;sa=";
 	$key = $modSettings['gm_key'];
 	$notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
+
+	$hide_profile_page = (isset($modSettings['gm_views_profile']) && ($modSettings['gm_views_profile'] == 0)) ? 'true' : 'false';
+	$hide_leaderboard_page = (isset($modSettings['gm_views_leaderboard']) && ($modSettings['gm_views_leaderboard'] == 0)) ? 'true' : 'false';
 	
 	$country = '';
 	
@@ -128,7 +131,15 @@ EOU;
 	      "notification_timeout"      : $notification_timeout,
 	      "responsive"                : true,
 	      "show_anonymous_rewards"    : true,
-	      "shuffle_reward"            : true
+	      "shuffle_reward"            : true,
+	      "pages"                       : {
+	        "profile"                   : {
+	          "hide"                    : $hide_profile_page
+	        },
+	        "leaderboard"               : {
+	          "hide"                    : $hide_leaderboard_page
+	        }
+	      }	      
 	    },
 	    "templates"                   : {}
 	  };
@@ -330,8 +341,6 @@ function gimmie_reward_config_save() {
   checkSession('post');
   
   $gm_settings = $_REQUEST['gm_settings'];
-  gimmie_log($gm_settings);
-  
   $gm_settings['gm_enable'] = (!empty($gm_settings['gm_enable']) ? true : false);
   
   $gm_settings['gm_key'] = (!empty($gm_settings['gm_key']) ? trim($gm_settings['gm_key']) : "e52853bfdcf1d49a0368181245b7");
@@ -340,19 +349,18 @@ function gimmie_reward_config_save() {
   
   $gm_settings['gm_notification_timeout'] = (!empty($gm_settings['gm_notification_timeout']) ? intval(trim($gm_settings['gm_notification_timeout'])) : 10);
   
-  $gm_settings['gm_views_catalog'] = (!empty($gm_settings['gm_views_catalog']) ? true : false);
-  $gm_settings['gm_views_profile'] = (!empty($gm_settings['gm_views_profile']) ? true : false);
-  $gm_settings['gm_views_leaderboard'] = (!empty($gm_settings['gm_views_leaderboard']) ? true : false);
+  if (!isset($gm_settings['gm_views_profile'])) {
+    $gm_settings['gm_views_profile'] = 0;
+  }
   
-  $gm_settings['gm_trigger_did_smf_user_login_time'] = (!empty($gm_settings['gm_trigger_did_smf_user_login_time']) ? true : false);
-  $gm_settings['gm_trigger_did_smf_new_thread'] = (!empty($gm_settings['gm_trigger_did_smf_new_thread']) ? true : false);
-  $gm_settings['gm_trigger_did_smf_reply_thread'] = (!empty($gm_settings['gm_trigger_did_smf_reply_thread']) ? true : false);
-  $gm_settings['gm_trigger_did_smf_reply_own_thread'] = (!empty($gm_settings['gm_trigger_did_smf_reply_own_thread']) ? true : false);
-  $gm_settings['gm_trigger_did_smf_new_poll'] = (!empty($gm_settings['gm_trigger_did_smf_new_poll']) ? true : false);
-  $gm_settings['gm_trigger_did_smf_vote_poll'] = (!empty($gm_settings['gm_trigger_did_smf_vote_poll']) ? true : false);
+  if (!isset($gm_settings['gm_views_leaderboard'])) {
+    $gm_settings['gm_views_leaderboard'] = 0;
+  }
 
   $gm_settings['gm_keywords_forum'] = (!empty($gm_settings['gm_keywords_forum']) ? trim($gm_settings['gm_keywords_forum']) : 'all');
   $gm_settings['gm_keywords'] = (!empty($gm_settings['gm_keywords']) ? trim($gm_settings['gm_keywords']) : "");
+  
+  gimmie_log($gm_settings);
   
   // Clear context
   $context['gimmie_countries'] = '';
