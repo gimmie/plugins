@@ -7,7 +7,11 @@ if (!defined('SMF')) {
  * Gimmie Hook
  */
 function gimmie_menu_buttons_hook(&$menu_buttons) {
-  global $txt;
+  global $txt, $modSettings;
+  
+  if (!is_gimmie_enabled()) {
+    return;
+  }
   
   loadLanguage('GimmieRewards');
   $menu_buttons = array_merge(
@@ -401,6 +405,11 @@ function gimmie_log($mixed) {
   if (0) {
     error_log(print_r($mixed, 1)."\n", 3, '/var/log/debug.php.log');
   }
+}
+
+function is_gimmie_enabled() {
+  global $modSettings;
+  return !!(isset($modSettings['gm_enable']) && $modSettings['gm_enable']);
 }
 
 function is_event_enabled($name) {
