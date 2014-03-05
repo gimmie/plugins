@@ -33,13 +33,13 @@ function template_gimmie_rewards_config() {
               <span><label for="gimmieKey"><?php echo $txt['gimmie_admin_key_label']; ?></label></span>
             </dt>
             <dd>
-              <input type="text" name="gm_settings[gm_key]" id="gimmieKey" size="50" class="input_text gm-input" value="<?php echo (isset ($modSettings['gm_key']) ? htmlspecialchars($modSettings['gm_key']) : ''); ?>">
+              <input type="text" name="gm_settings[gm_key]" id="gimmieKey" size="50" class="input_text gm-input" value="<?php echo (isset ($modSettings['gm_key']) ? htmlspecialchars($modSettings['gm_key']) : 'e52853bfdcf1d49a0368181245b7'); ?>">
             </dd>
             <dt>
               <span><label for="gimmieSecret"><?php echo $txt['gimmie_admin_secret_label']; ?></label></span>
             </dt>
             <dd>
-              <input type="text" name="gm_settings[gm_secret]" id="gimmieSecret" size="50" class="input_text gm-input" value="<?php echo (isset($modSettings['gm_secret']) ? htmlspecialchars($modSettings['gm_secret']) : ''); ?>">
+              <input type="text" name="gm_settings[gm_secret]" id="gimmieSecret" size="50" class="input_text gm-input" value="<?php echo (isset($modSettings['gm_secret']) ? htmlspecialchars($modSettings['gm_secret']) : '3a95b4f7da128421ca7a15d67d3b'); ?>">
             </dd>
             
             <dt>
