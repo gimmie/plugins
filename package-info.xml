@@ -6,8 +6,8 @@
   <type>modification</type>
   <version>1.0</version>
 
-  <install>
-    <readme parsebbc="true">readme.md</readme>
+  <install for="2.0">
+    <readme parsebbc="true">readme.txt</readme>
 
     <code>install.php</code>
     <redirect url="?action=admin;area=gmss;sa=settings">redirect.txt</redirect>
