@@ -7,7 +7,7 @@
   <version>1.0</version>
 
   <install>
-    <readme parsebbc="true">readme.txt</readme>
+    <readme parsebbc="true">readme.md</readme>
 
     <code>install.php</code>
     <redirect url="?action=admin;area=gmss;sa=settings">redirect.txt</redirect>
