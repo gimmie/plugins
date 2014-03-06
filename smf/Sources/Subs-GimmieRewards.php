@@ -184,6 +184,16 @@ EOS;
 
 	}
 	
+	if (isset($modSettings['gm_style'])) {
+	  $stylesheet = $modSettings['gm_style'];
+  	$headers = $headers.<<<EOS
+  	
+	<style>
+$stylesheet
+	</style>
+EOS;
+	}
+	
   $context['html_headers'] = $headers;
 }
 
