@@ -72,39 +72,39 @@ function gimmie_load_theme_hook() {
   global $context, $settings, $modSettings, $scripturl, $user_info;
   
   $themeurl = $settings['theme_url'];
-	$user = $context['user'];
-	
-	$endpoint = $scripturl."?action=gmpx;sa=";
-	$key = $modSettings['gm_key'];
-	$notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
-
-	$hide_profile_page = (isset($modSettings['gm_views_profile']) && ($modSettings['gm_views_profile'] == 0)) ? 'true' : 'false';
-	$hide_leaderboard_page = (isset($modSettings['gm_views_leaderboard']) && ($modSettings['gm_views_leaderboard'] == 0)) ? 'true' : 'false';
-	
-	$country = '';
-	
-	if (!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') {
-	  $ip = isset($user_info['ip2']) ? $user_info['ip2'] : $user_info['ip'];
-    $country = trim(file_get_contents('http://api.wipmania.com/'.$ip));
-	}
-	else {
-	  $country = $modSettings['gm_country'];
-	}
-	
-  $headers = $context['html_headers'];
-	$headers = $headers.<<<EOH
-	
-	
-	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" rel="stylesheet" />
-	<link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
+  $user = $context['user'];
   
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.js"></script>
-	<script type="text/javascript">
-	  $(document).ready(function () {
-	    $(".gimmie .gm-select").select2();
-	  });
-	</script>
+  $endpoint = $scripturl."?action=gmpx;sa=";
+  $key = $modSettings['gm_key'];
+  $notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
+
+  $hide_profile_page = (isset($modSettings['gm_views_profile']) && ($modSettings['gm_views_profile'] == 0)) ? 'true' : 'false';
+  $hide_leaderboard_page = (isset($modSettings['gm_views_leaderboard']) && ($modSettings['gm_views_leaderboard'] == 0)) ? 'true' : 'false';
+  
+  $country = '';
+  
+  if (!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') {
+    $ip = isset($user_info['ip2']) ? $user_info['ip2'] : $user_info['ip'];
+    $country = trim(file_get_contents('http://api.wipmania.com/'.$ip));
+  }
+  else {
+    $country = $modSettings['gm_country'];
+  }
+  
+  $headers = $context['html_headers'];
+  $headers = $headers.<<<EOH
+  
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" rel="stylesheet" />
+  <link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
+  
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".gimmie .gm-select").select2();
+    });
+  </script>
   
 EOH;
 
@@ -113,12 +113,12 @@ EOH;
     $help_text = $modSettings['gm_help_text'];
     $help_url = $modSettings['gm_help_url'];
   
-  	$headers = $headers.<<<EOS
-	<script type="text/javascript">
-	  _gimmie = {
-	    "endpoint"                    : "$endpoint",
-	    "key"                         : "$key",
-	    "country"                     : "$country",  
+    $headers = $headers.<<<EOS
+  <script type="text/javascript">
+    _gimmie = {
+      "endpoint"                    : "$endpoint",
+      "key"                         : "$key",
+      "country"                     : "$country",  
 EOS;
     
     if (!$user['is_guest']) {
@@ -128,72 +128,72 @@ EOS;
       
       $headers = $headers.<<<EOU
       
-	    "user"                        : {
-	        "external_uid"              : "$email",
-	        // Display name
-	        "name"                      : "$username",
-	        // Gateway name
-	        "realname"                  : "$name",
-	        "email"                     : "$email",
-	        "avatar"                    : ""
-	    },
+      "user"                        : {
+          "external_uid"              : "$email",
+          // Display name
+          "name"                      : "$username",
+          // Gateway name
+          "realname"                  : "$name",
+          "email"                     : "$email",
+          "avatar"                    : ""
+      },
 EOU;
     }
     
     $headers = $headers.<<<EOS
 
-	    "options"                     : {
-	      "animate"                   : true,
-	      "auto_show_notification"    : true,
-	      "notification_timeout"      : $notification_timeout,
-	      "responsive"                : true,
-	      "show_anonymous_rewards"    : true,
-	      "shuffle_reward"            : true,
-	      "pages"                       : {
-	        "profile"                   : {
-	          "hide"                    : $hide_profile_page
-	        },
-	        "leaderboard"               : {
-	          "hide"                    : $hide_leaderboard_page
-	        }
-	      }	      
-	    },
-	    "text"                        : {
-	      "help"                      : "$help_text",
-	      "help_url"                  : "$help_url",
+      "options"                     : {
+        "animate"                   : true,
+        "auto_show_notification"    : true,
+        "notification_timeout"      : $notification_timeout,
+        "responsive"                : true,
+        "show_anonymous_rewards"    : true,
+        "shuffle_reward"            : true,
+        "pages"                       : {
+          "profile"                   : {
+            "hide"                    : $hide_profile_page
+          },
+          "leaderboard"               : {
+            "hide"                    : $hide_leaderboard_page
+          }
+        }       
+      },
+      "text"                        : {
+        "help"                      : "$help_text",
+        "help_url"                  : "$help_url",
 $localize_text
-	    },  
-	    "templates"                   : {}
-	  };
+      },  
+      "templates"                   : {}
+    };
     
-	  $(document).ready(function () {
-	    var root = document.createElement('div');
-	    root.id = "gimmie-root";
-	    document.body.appendChild(root);
-	    
-	    (function(d){
-	      var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
-	      if (d.getElementById(id)) {return;}
-	      js = d.createElement("script"); js.id = id; js.async = true;
-	      js.src = "http://api.llun.in/assets/gimmie-widget2.all.js";
-	      ref.parentNode.insertBefore(js, ref);
-	    }(document));
-	  });
-	</script>
+    $(document).ready(function () {
+      var root = document.createElement('div');
+      root.id = "gimmie-root";
+      document.body.appendChild(root);
+      
+      (function(d){
+        var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement("script"); js.id = id; js.async = true;
+        js.src = "http://api.llun.in/assets/gimmie-widget2.all.js";
+        ref.parentNode.insertBefore(js, ref);
+      }(document));
+    });
+  </script>
 EOS;
 
-	}
-	
-	if (isset($modSettings['gm_style'])) {
-	  $stylesheet = $modSettings['gm_style'];
-  	$headers = $headers.<<<EOS
-  	
-	<style>
+  }
+  
+  if (isset($modSettings['gm_style'])) {
+    $stylesheet = $modSettings['gm_style'];
+    $headers = $headers.<<<EOS
+    
+  <style>
 $stylesheet
-	</style>
+  </style>
 EOS;
-	}
-	
+  }
+  
   $context['html_headers'] = $headers;
 }
 
@@ -205,21 +205,21 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   $email = $user_info['email'];
 
   $request = $smcFunc['db_query']('', '
-		SELECT
-			t.id_board, t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
-			CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
-		FROM {db_prefix}topics AS t
-			LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
-			LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
-		WHERE t.id_topic = {int:current_topic}
-		LIMIT 1',
-		array(
-			'current_member' => $user_info['id'],
-			'current_topic' => $topic,
-		)
-	);
-	list ($board, $owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
-	$smcFunc['db_free_result']($request);
+    SELECT
+      t.id_board, t.id_member_started, t.id_poll, t.num_replies, t.id_last_msg, ml.body,
+      CASE WHEN ml.poster_time > ml.modified_time THEN ml.poster_time ELSE ml.modified_time END AS last_post_time
+    FROM {db_prefix}topics AS t
+      LEFT JOIN {db_prefix}log_notify AS ln ON (ln.id_topic = t.id_topic AND ln.id_member = {int:current_member})
+      LEFT JOIN {db_prefix}messages AS ml ON (ml.id_msg = t.id_last_msg)
+    WHERE t.id_topic = {int:current_topic}
+    LIMIT 1',
+    array(
+      'current_member' => $user_info['id'],
+      'current_topic' => $topic,
+    )
+  );
+  list ($board, $owner, $poll_id, $total_replies, $last_message_id, $last_message) = $smcFunc['db_fetch_row']($request);
+  $smcFunc['db_free_result']($request);
   
   switch ($context['current_action']) {
     case 'vote':
@@ -233,18 +233,18 @@ function gimmie_redirect(&$setLocation, &$refresh) {
       $user_id = $user_info['id'];
       if ($total_replies > 0) {
         $user_action = 'did_smf_reply_thread';
-    		if ($user_id == $owner) {
-    		  $user_action = 'did_smf_reply_own_thread';
-    		}
-  		}
-  		else if ($poll_id) {
-  		  $user_action = 'did_smf_new_poll';
-  		}
-  		else {
-    		$user_action = 'did_smf_new_thread';
-  		}
-  		
-  		if (is_board_enabled($board) && is_event_enabled("gm_trigger_$user_action")) {
+        if ($user_id == $owner) {
+          $user_action = 'did_smf_reply_own_thread';
+        }
+      }
+      else if ($poll_id) {
+        $user_action = 'did_smf_new_poll';
+      }
+      else {
+        $user_action = 'did_smf_new_thread';
+      }
+      
+      if (is_board_enabled($board) && is_event_enabled("gm_trigger_$user_action")) {
         switch ($user_action) {
           case 'did_smf_new_poll':
             trigger_event_for_user($user_action, $email);
@@ -253,26 +253,26 @@ function gimmie_redirect(&$setLocation, &$refresh) {
           case 'did_smf_reply_own_thread':
           case 'did_smf_new_thread':
             $keywords = $modSettings['gm_keywords'];
-        		$keywords = explode(',', $keywords);
-        		$keywords = array_map('trim', $keywords);
-        		
-        		# (not whitespace)<keyword>(not whitespace) or (not whitespace)<another keyword>(not whitespace) or ...
-        		$pattern1 = '\W'.implode('\W|\W', $keywords).'\W'; 
-        		# (start with)<keyword>(not whitespace) or (start with)<another keyword>(not whitespace) or ...
-        		$pattern2 = '^'.implode('\W|^', $keywords).'\W';
-        		# (not whitespace)<keyword>(ending) or (not whitespace)<another keyword>(ending) or ...
-        		$pattern3 = '\W'.implode('$|\W', $keywords).'$';
-        		$pattern = "/($pattern1|$pattern2|$pattern3)/i";
-        		
-        		if (preg_match($pattern, $last_message)) {
-        		  gimmie_log($user_action);
-          		trigger_event_for_user($user_action, $email);
-        		}  
+            $keywords = explode(',', $keywords);
+            $keywords = array_map('trim', $keywords);
+            
+            # (not whitespace)<keyword>(not whitespace) or (not whitespace)<another keyword>(not whitespace) or ...
+            $pattern1 = '\W'.implode('\W|\W', $keywords).'\W'; 
+            # (start with)<keyword>(not whitespace) or (start with)<another keyword>(not whitespace) or ...
+            $pattern2 = '^'.implode('\W|^', $keywords).'\W';
+            # (not whitespace)<keyword>(ending) or (not whitespace)<another keyword>(ending) or ...
+            $pattern3 = '\W'.implode('$|\W', $keywords).'$';
+            $pattern = "/($pattern1|$pattern2|$pattern3)/i";
+            
+            if (preg_match($pattern, $last_message)) {
+              gimmie_log($user_action);
+              trigger_event_for_user($user_action, $email);
+            }  
             
             break;
         }
-    		
-  		}
+        
+      }
 
       break;
   }  
