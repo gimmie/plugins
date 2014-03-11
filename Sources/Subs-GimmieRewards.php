@@ -29,7 +29,7 @@ function gimmie_menu_buttons_hook(&$menu_buttons) {
 }
 
 function gimmie_admin_area_hook(&$admin_area) {
-  global $txt;
+  global $txt, $scopeurl;
   
   loadLanguage('GimmieRewards');
   $admin_area = array_merge(
@@ -70,36 +70,20 @@ function gimmie_actions_hook(&$actions) {
 
 function gimmie_load_theme_hook() {
   global $context, $settings, $modSettings, $scripturl, $user_info;
-  
+    
   $themeurl = $settings['theme_url'];
   $user = $context['user'];
   
-  $endpoint = $scripturl."?action=gmpx;sa=";
-  $key = $modSettings['gm_key'];
-  $notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
-
-  $hide_profile_page = (isset($modSettings['gm_views_profile']) && ($modSettings['gm_views_profile'] == 0)) ? 'true' : 'false';
-  $hide_leaderboard_page = (isset($modSettings['gm_views_leaderboard']) && ($modSettings['gm_views_leaderboard'] == 0)) ? 'true' : 'false';
-  
-  $country = '';
-  
-  if (!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') {
-    $ip = isset($user_info['ip2']) ? $user_info['ip2'] : $user_info['ip'];
-    $country = trim(file_get_contents('http://api.wipmania.com/'.$ip));
-  }
-  else {
-    $country = $modSettings['gm_country'];
-  }
   
   $headers = $context['html_headers'];
   $headers = $headers.<<<EOH
   
   
-  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" rel="stylesheet" />
+  <link href="$themeurl/css/select2.css" rel="stylesheet" />
   <link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
   
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.js"></script>
+  <script type="text/javascript" src="$themeurl/js/select2.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       $(".gimmie .gm-select").select2();
@@ -108,7 +92,24 @@ function gimmie_load_theme_hook() {
   
 EOH;
 
-  if ($modSettings['gm_enable']) {
+  if (!empty($modSettings['gm_enable']) && $modSettings['gm_enable']) {
+    $endpoint = $scripturl."?action=gmpx;sa=";
+    $key = $modSettings['gm_key'];
+    $notification_timeout = isset($modSettings['gm_notification_timeout']) ? $modSettings['gm_notification_timeout'] : 10;
+  
+    $hide_profile_page = (isset($modSettings['gm_views_profile']) && ($modSettings['gm_views_profile'] == 0)) ? 'true' : 'false';
+    $hide_leaderboard_page = (isset($modSettings['gm_views_leaderboard']) && ($modSettings['gm_views_leaderboard'] == 0)) ? 'true' : 'false';
+    
+    $country = '';
+    
+    if (!isset($modSettings['gm_country']) || $modSettings['gm_country'] == 'auto') {
+      $ip = isset($user_info['ip2']) ? $user_info['ip2'] : $user_info['ip'];
+      $country = trim(file_get_contents('http://api.wipmania.com/'.$ip));
+    }
+    else {
+      $country = $modSettings['gm_country'];
+    }    
+  
     $localize_text = $modSettings['gm_localize'];
     $help_text = $modSettings['gm_help_text'];
     $help_url = $modSettings['gm_help_url'];

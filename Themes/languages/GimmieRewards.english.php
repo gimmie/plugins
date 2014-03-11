@@ -6,6 +6,7 @@ $txt['gimmie_admin_description'] = 'Rewards and Trigger Configuration';
 $txt['gimmie_admin_enable_label'] = 'Enable Gimmie';
 $txt['gimmie_admin_key_label'] = 'API Key';
 $txt['gimmie_admin_secret_label'] = 'API Secret';
+$txt['gimmie_admin_key_help'] = '<a href="http://www.gimmieworld.com" target="_blank">Key and Secret can change by signup or login here</a>';
 $txt['gimmie_admin_country_label'] = 'Rewards Country';
 $txt['gimmie_admin_popup_views'] = 'Popup Views';
 $txt['gimmie_admin_popup_catalog'] = 'Catalog';

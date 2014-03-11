@@ -40,6 +40,7 @@ function template_gimmie_rewards_config() {
             </dt>
             <dd>
               <input type="text" name="gm_settings[gm_secret]" id="gimmieSecret" size="50" class="input_text gm-input" value="<?php echo (isset($modSettings['gm_secret']) ? htmlspecialchars($modSettings['gm_secret']) : '3a95b4f7da128421ca7a15d67d3b'); ?>">
+              <p class="help"><?php echo $txt['gimmie_admin_key_help']; ?></p>
             </dd>
             
             <dt>

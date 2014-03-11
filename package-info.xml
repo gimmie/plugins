@@ -6,11 +6,11 @@
   <type>modification</type>
   <version>1.0</version>
 
-  <install for="2.0.0 - 2.0.7">
+  <install for="2.0.0 - 2.0.99">
     <readme parsebbc="true">readme.txt</readme>
 
     <code>install.php</code>
-    <redirect url="?action=admin;area=gmss;sa=settings">redirect.txt</redirect>
+    <redirect url="?action=admin;area=gmss;sa=settings"></redirect>
 
     <require-file name="/Themes/GimmieRewards.admin.template.php" destination="$themedir" />
     <require-file name="/Themes/languages/GimmieRewards.english.php" destination="$languagedir" />
