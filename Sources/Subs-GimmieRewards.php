@@ -43,13 +43,13 @@ function gimmie_admin_area_hook(&$admin_area) {
             'label'       => $txt['gimmie_admin_description'],
             'file'        => 'Subs-GimmieRewards.php',
             'function'    => 'gimmie_reward_config',
-            'custom_url'  => $scopeurl.'?action=admin;area=gmss;sa=settings;secs='.$sc
+            'custom_url'  => $scopeurl.'?action=admin;area=gmss;sa=settings'
           ),
           'gmls' => array(
             'label'       => $txt['gimmie_localize_description'],
             'file'        => 'Subs-GimmieRewards.php',
             'function'    => 'gimmie_localize_config',
-            'custom_url'  => $scopeurl.'?action=admin;area=gmls;sa=settings;secs='.$sc 
+            'custom_url'  => $scopeurl.'?action=admin;area=gmls;sa=settings'
           )
         )
       )
@@ -110,9 +110,9 @@ EOH;
       $country = $modSettings['gm_country'];
     }    
   
-    $localize_text = $modSettings['gm_localize'];
-    $help_text = $modSettings['gm_help_text'];
-    $help_url = $modSettings['gm_help_url'];
+    $localize_text = isset($modSettings['gm_localize']) ? $modSettings['gm_localize'] : 'us';
+    $help_text = isset($modSettings['gm_help_text']) ? $modSettings['gm_help_text'] : '';
+    $help_url = isset($modSettings['gm_help_url']) ? $modSettings['gm_help_url'] : '';
   
     $headers = $headers.<<<EOS
   <script type="text/javascript">
@@ -376,7 +376,7 @@ function gimmie_reward_config_show() {
   $context['gimmie_boards'] = $boards;
 
   $context['sub_template'] = 'gimmie_rewards_config';
-  $context['page_title'] = $txt['gmss_title'];
+  $context['page_title'] = $txt['gimmie_admin_title'];
 }
 
 function gimmie_reward_config_save() {
@@ -424,7 +424,7 @@ function gimmie_localize_config_show() {
   loadtemplate('GimmieRewards.admin', array('GimmieRewards.admin'));
   
   $context['sub_template'] = 'gimmie_localize_config';
-  $context['page_title'] = $txt['gmss_title'];
+  $context['page_title'] = $txt['gimmie_admin_title'];
 }
 
 function gimmie_localize_config_save() {

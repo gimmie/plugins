@@ -103,7 +103,7 @@ function template_gimmie_rewards_config() {
           
             <dt><span><label for="gimmieKeywords"><?php echo $txt['gimmie_admin_keywords']; ?></label></span></dt>
             <dd>
-              <textarea id="gimmieKeywords" name="gm_settings[gm_keywords]" class="gm-input input_textarea" rows="5"><?php echo $modSettings['gm_keywords']; ?></textarea>
+              <textarea id="gimmieKeywords" name="gm_settings[gm_keywords]" class="gm-input input_textarea" rows="5"><?php echo (isset($modSettings['gm_keywords']) ? $modSettings['gm_keywords'] : ''); ?></textarea>
             </dd>
           </dl>
           
@@ -220,7 +220,7 @@ LOCALIZE;
   
     <form method="post" action="<?php echo $scripturl; ?>?action=gmls">
       <div class="cat_bar">
-        <h3 class="catbg"><?php echo $txt['gimmie_localize_title']; ?></h3>
+        <h3 class="catbg"><?php echo $txt['gimmie_localize_description']; ?></h3>
       </div>
 
       <div class="windowbg2">
@@ -260,7 +260,7 @@ LOCALIZE;
               <span><label for="gimmieHelpURL"><?php echo $txt['gimmie_help_url']; ?></label></span>
             </dt>
             <dd>
-              <input id="gimmieHelpURL" type="url" name="gm_settings[gm_help_url]" value="<?php echo $modSettings['gm_help_url']; ?>" />
+              <input id="gimmieHelpURL" type="url" name="gm_settings[gm_help_url]" value="<?php echo (isset($modSettings['gm_help_url']) ? $modSettings['gm_help_url'] : ''); ?>" />
             </dd>
           </dl>
             
