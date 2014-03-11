@@ -78,17 +78,7 @@ function gimmie_load_theme_hook() {
   $headers = $context['html_headers'];
   $headers = $headers.<<<EOH
   
-  
-  <link href="$themeurl/css/select2.css" rel="stylesheet" />
   <link href="$themeurl/css/GimmieRewards.css" rel="stylesheet" />
-  
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script type="text/javascript" src="$themeurl/js/select2.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $(".gimmie .gm-select").select2();
-    });
-  </script>
   
 EOH;
 
@@ -167,7 +157,7 @@ $localize_text
       "templates"                   : {}
     };
     
-    $(document).ready(function () {
+    window.onload = function () {
       var root = document.createElement('div');
       root.id = "gimmie-root";
       document.body.appendChild(root);
@@ -176,10 +166,10 @@ $localize_text
         var js, id = "gimmie-widget", ref = d.getElementsByTagName("script")[0];
         if (d.getElementById(id)) {return;}
         js = d.createElement("script"); js.id = id; js.async = true;
-        js.src = "http://api.llun.in/assets/gimmie-widget2.all.js";
+        js.src = "https://api.gimmieworld.com/assets/gimmie-widget2.all.js";
         ref.parentNode.insertBefore(js, ref);
       }(document));
-    });
+    }
   </script>
 EOS;
 
