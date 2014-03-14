@@ -273,7 +273,7 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   
 function gimmie_login_hook($username) {
   global $sourcedir, $context, $modSettings, $user_profile;
-  require_once($sourcedir.'/Gimmie.sdk.php');
+  require_once($sourcedir.'/Gimmie/gimmie.php');
   
   $event = 'did_smf_user_login_time';
   if (is_event_enabled("gm_trigger_$event")) {
@@ -293,7 +293,7 @@ function gimmie_login_hook($username) {
  */
 function gimmie_proxy() {
   global $sourcedir, $context, $modSettings;
-  require_once($sourcedir.'/Gimmie.sdk.php');
+  require_once($sourcedir.'/Gimmie/gimmie.php');
 
   $sa = !empty($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
   
@@ -464,9 +464,9 @@ function is_board_enabled($board) {
 
 function trigger_event_for_user($event, $user) {
   global $modSettings, $sourcedir;
-  require_once($sourcedir.'/Gimmie.sdk.php');
+  require_once($sourcedir.'/Gimmie/gimmie.php');
 
   $gimmie = Gimmie::getInstance($modSettings['gm_key'], $modSettings['gm_secret']);
-  $gimmie->login($user);
-  $gimmie->trigger_with_name($event);
+  $gimmie->set_user($user);
+  $gimmie->trigger($event);
 }
