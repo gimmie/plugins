@@ -16,7 +16,8 @@
     <require-file name="/Themes/languages/GimmieRewards.english.php" destination="$languagedir" />
     <require-file name="/Themes/css/GimmieRewards.css" destination="$themedir/css" />
 
-    <require-file name="/Sources/Gimmie.sdk.php" destination="$sourcedir"/>
+    <require-file name="/Sources/Gimmie/Gimmie_OAuth.php" destination="$sourcedir"/>
+    <require-file name="/Sources/Gimmie/Gimmie.sdk.php" destination="$sourcedir"/>
     <require-file name="/Sources/Subs-GimmieRewards.php" destination="$sourcedir"/>
   </install>
 
@@ -29,5 +30,6 @@
 
     <remove-file name="$sourcedir/Subs-GimmieRewards.php" />
     <remove-file name="$sourcedir/Gimmie.sdk.php" />
+    <remove-file name="$sourcedir/Gimmie_OAuth.php" />
   </uninstall>
 </package-info>

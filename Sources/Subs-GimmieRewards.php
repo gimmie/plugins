@@ -18,7 +18,7 @@ function gimmie_menu_buttons_hook(&$menu_buttons) {
     array_slice($menu_buttons, 0, 1, true),
     array(
       'gimmie' => array(
-        'title' => $txt['gimmie_button'],
+        'title' => (isset($txt['gimmie_button']) ? $txt['gimmie_button'] : 'Gimmie'),
         'href' => 'javascript:GimmieWidget._showPopup(\'catalog\')',
         'show' => true,
         'sub_buttons' => array()
@@ -273,7 +273,7 @@ function gimmie_redirect(&$setLocation, &$refresh) {
   
 function gimmie_login_hook($username) {
   global $sourcedir, $context, $modSettings, $user_profile;
-  require_once($sourcedir.'/Gimmie/gimmie.php');
+  require_once($sourcedir.'/Gimmie.sdk.php');
   
   $event = 'did_smf_user_login_time';
   if (is_event_enabled("gm_trigger_$event")) {
@@ -293,7 +293,7 @@ function gimmie_login_hook($username) {
  */
 function gimmie_proxy() {
   global $sourcedir, $context, $modSettings;
-  require_once($sourcedir.'/Gimmie/gimmie.php');
+  require_once($sourcedir.'/Gimmie.sdk.php');
 
   $sa = !empty($_REQUEST['sa']) ? $_REQUEST['sa'] : '';
   
@@ -464,7 +464,7 @@ function is_board_enabled($board) {
 
 function trigger_event_for_user($event, $user) {
   global $modSettings, $sourcedir;
-  require_once($sourcedir.'/Gimmie/gimmie.php');
+  require_once($sourcedir.'/Gimmie.sdk.php');
 
   $gimmie = Gimmie::getInstance($modSettings['gm_key'], $modSettings['gm_secret']);
   $gimmie->set_user($user);
