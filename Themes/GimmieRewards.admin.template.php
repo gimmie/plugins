@@ -1,4 +1,28 @@
 <?php
+/* 
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2014 Gimmieworld pte ltd.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 if (!defined('SMF')) {
   die('You are not allowed to access this file directly');
 }
@@ -163,58 +187,6 @@ function template_gimmie_rewards_config() {
 
 function template_gimmie_localize_config() {
   global $txt, $context, $scripturl, $modSettings;
-
-  $default_localize = <<<LOCALIZE
-"empty_reward"              : "There are no rewards in the catalog right now. Please check back again while we add more rewards.",
-"loading_reward"            : "Loading Rewards",
-"error"                     : "Something wrong, please close and open again later.",
-"login_title_text"          : "Login/Sign up",
-"login_subline"             : "to redeem rewards",
-"login_headline"            : "<p>Please login or signup to</p><p>earn points and redeem rewards</p>",
-"login_button"              : "Login/Signup <img data-src='{{root}}navigation-arrow.png'>",
-"help_link"                 : "How do I earn points?",
-"reward_tab_title"          : "Reward",
-"reward_tab_profile"        : "Profile",
-"reward_tab_leaderboard"    : "Leaderboard",
-"points"                    : "points",
-"loading"                   : "Loading",
-"reached_highest_level"     : "Reached highest level",
-"points_to_level"           : "points to Level",
-"badges_title"              : "Badges",
-"mayorships_title"          : "Mayorships",
-"redemptions_title"         : "Redemptions",
-"activities_title"          : "Activities",
-"badge"                     : "Badge",
-"mystery_badge"             : "Mystery Badge",
-"expires"                   : "Expires",
-"redeemed"                  : "Redeemed",
-"expired"                   : "Expired",
-"loading_activities"        : "Loading Activities",
-"empty_activities"          : "<p>You don't have recent activities.</p><p>When you earn points, badges or rewards a log of activities is shown here.</p>",
-"fully_redeemed"            : "FULLY REDEEMED",
-"featured_reward"           : "FEATURED REWARD",
-"sponsor_here"              : "<p>Want to list your reward here?</p><small>Click for details.</small>",
-"back_to_catalog"           : "&laquo; All {{data.category_name}} Rewards",
-"redeem_button"             : "Redeem with {{data.points}} pts",
-"use_reward_now"            : "Use Reward Now",
-"description"               : "Description",
-"fineprint"                 : "Fine Print",
-"user_points"               : "You have <span class=\"gimmie-user-points\">{{user.points}}</span> pts",
-"see_all_redemptions"       : "See All Redemptions",
-"havent_redeemed"           : "<p>You haven't redeemed any rewards.</p><p>View your redemptions here after redeeming a reward from the catalog.</p>",
-"see_all_mayorships"        : "See All Mayorships",
-"empty_mayorships"          : "<p>You don't have any mayorships</p><p>Mayorships are given to the most active user at specific venues in a period of 30 days</p>",
-"see_all_badges"            : "See All Badges",
-"loading_badges"            : "Loading Badges",
-"empty_badges"              : "<p>You don't have any badges.</p><p>Badges are rewarded when you do centain actions.</p>",
-"see_all_activities"        : "See All Activities",
-"loading_recent_activities" : "Loading recent activities",
-"all_time_points"           : "all-time points:",
-"most_points"               : "Most Points",
-"most_rewards"              : "Most Rewards",
-"most_reward_value"         : "Most Reward Value",
-"loading_leaderboard"       : "Loading Leaderboard"
-LOCALIZE;
 ?>
 <div class="admincenter">
   
@@ -237,17 +209,7 @@ LOCALIZE;
           </dl>
           
           <hr class="hrcolor clear">
-          
-          <dl class="settings">
-            <dt>
-              <span><label for="gimmieLocalizeTexts"><?php echo $txt['gimmie_localize_texts']; ?></label></span>
-            </dt>
-            <dd>
-              <textarea id="gimmieLocalizeTexts" name="gm_settings[gm_localize]" class="gm-input input_textarea" rows="15"><?php echo isset($modSettings['gm_localize']) ? $modSettings['gm_localize'] : $default_localize; ?></textarea>
-            </dd>
-          </dl>
-          <hr class="hrcolor clear">
-          
+                    
           <dl class="settings">
             <dt>
               <span><label for="gimmieHelpText"><?php echo $txt['gimmie_help_text']; ?></label></span>
