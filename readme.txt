@@ -2,6 +2,13 @@
 
 Adding Gimmie rewards to forum and allow forum user earn points and get real rewards when posting or do actions in board.
 
+# Installation
+
+1. Create new directory name `Gimmie` under `Packages` in SMF directory.
+2. Copy all files in this project to that new directory.
+3. Open admin area and packages management
+4. Select `Install Mod` in package list and confirm install by click on `Install Now` again.
+
 # License
 The MIT License (MIT)
 
