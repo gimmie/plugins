@@ -4,7 +4,7 @@
   <id>gimmie:GimmieRewards</id>
   <name>Gimmie Rewards</name>
   <type>modification</type>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 
   <install for="2.0.0 - 2.0.99">
     <readme parsebbc="true">readme.txt</readme>
@@ -21,7 +21,7 @@
     <require-file name="/Sources/Subs-GimmieRewards.php" destination="$sourcedir"/>
   </install>
 
-  <uninstall for="2.0.0 - 2.0.99">    
+  <uninstall for="2.0.0 - 2.0.99">
     <code>uninstall.php</code>
 
     <remove-file name="$themedir/GimmieRewards.admin.template.php" />
