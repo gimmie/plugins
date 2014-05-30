@@ -1,0 +1,3 @@
+[submodule "Sources/Gimmie"]
+	path = Sources/Gimmie
+	url = git@github.com:gimmie/php
